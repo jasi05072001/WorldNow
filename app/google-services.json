@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "898444993529",
+    "project_id": "world-now-b5eae",
+    "storage_bucket": "world-now-b5eae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898444993529:android:6b11f89b8e92656b721328",
+        "android_client_info": {
+          "package_name": "com.jasmeet.worldnow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "898444993529-q66pjpsheinpthvpv3p792k9b8144d7s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jasmeet.worldnow",
+            "certificate_hash": "785d9d3f785dbaca8b3bd90ced296122aa1a2673"
+          }
+        },
+        {
+          "client_id": "898444993529-n1b0380ghtvti2duej808fgvmnpqn7ig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgr-3311mEAg0tn6VF9uWsXvJf7H2v5jY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "898444993529-n1b0380ghtvti2duej808fgvmnpqn7ig.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
