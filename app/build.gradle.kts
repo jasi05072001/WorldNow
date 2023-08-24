@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.isIncrementalKapt
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -96,6 +94,10 @@ dependencies {
 
     //lottie
     implementation(libs.lottie)
+
+    //system ui controller
+    implementation(libs.system.ui.controller)
+
 }
 kapt{
     correctErrorTypes = true

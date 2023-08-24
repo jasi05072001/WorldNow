@@ -42,6 +42,13 @@ fun WorldNowTheme(
             val window = (view.context as Activity).window
             window.statusBarColor = Color(0xFF215776).toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+
+            if (darkTheme){
+                window.navigationBarColor = darkBackGround.toArgb()
+            }
+            else{
+                window.navigationBarColor = Color(0xFF215776).toArgb()
+            }
         }
     }
 

@@ -1,8 +1,6 @@
 package com.jasmeet.worldnow.viewModels
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -24,6 +22,9 @@ class SignInViewModel @Inject constructor(private val auth: FirebaseAuth) : View
 
     private val debounceTimeMillis = 5000L
     private var lastErrorShownTime = 0L
+
+    private val state = MutableStateFlow<Boolean>(false)
+    val stateFlow: StateFlow<Boolean> = state
 
     init {
 
@@ -69,16 +70,18 @@ class SignInViewModel @Inject constructor(private val auth: FirebaseAuth) : View
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     isLoading.value = false
-                    _message.value = "Reset password link sent to your email."
-                    viewModelScope.launch {
-                        delay(2000)
-                        AppRouter.navigateTo(Screens.SignInScreen)
-                    }
+                    state.value = true
                 } else {
                     _message.value = task.exception?.message ?: "Unknown error occurred."
                     isLoading.value = false
+                    state.value = false
                     setErrorMessage(task.exception?.message ?: "Unknown error occurred.")
                 }
             }
     }
+
+    fun resetResetPasswordState() {
+        state.value = false
+    }
+
 }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
+import com.jasmeet.worldnow.screens.forgotPasswordScreen.ForgotPasswordScreen
 import com.jasmeet.worldnow.screens.introScreen.IntroScreen
 import com.jasmeet.worldnow.screens.signInScreen.SignInScreen
 import com.jasmeet.worldnow.screens.splashScreen.SplashScreen
@@ -36,6 +37,7 @@ fun MainApp() {
             val signInScreenVisible = currentScreen.value is Screens.SignInScreen
             val introScreenVisible = currentScreen.value is Screens.IntroScreen
             val homeScreenVisible = currentScreen.value is Screens.HomeScreen
+            val forgotPasswordScreenVisible = currentScreen.value is Screens.ForgotPasswordScreen
 
             AnimatedVisibility(
                 visible= splashScreenVisible,
@@ -66,6 +68,15 @@ fun MainApp() {
                 exit = fadeOut() + slideOutHorizontally (targetOffsetX = { it })
             ) {
                 IntroScreen()
+            }
+
+
+            AnimatedVisibility(
+                visible = forgotPasswordScreenVisible,
+                enter = fadeIn() + slideInHorizontally(initialOffsetX = { -it },),
+                exit = fadeOut() + slideOutHorizontally (targetOffsetX = { it })
+            ) {
+                ForgotPasswordScreen()
             }
 
             AnimatedVisibility(

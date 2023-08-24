@@ -1,7 +1,10 @@
 package com.jasmeet.worldnow.appComponents
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -33,8 +37,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -45,6 +52,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -77,14 +85,14 @@ fun TextFieldComponent(
             .padding(horizontal = 15.dp)
             .heightIn(42.dp)
             .fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp)
     ){
         TextField(
             value = value,
             onValueChange = {
                 onValueChange.invoke(it)
             },
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
@@ -225,24 +233,26 @@ fun ButtonComponent(
     text: String,
     isEnabled : Boolean = false,
 
-) {
+    ) {
     Button(
         onClick = {
             onclick.invoke()
         },
-        modifier = Modifier .padding(horizontal = 15.dp)
+        modifier = Modifier
+            .padding(horizontal = 15.dp)
             .fillMaxWidth()
             .height(50.dp)
             .then(
                 if (isEnabled)
                     Modifier.bounceClick()
-
                 else
                     Modifier
             ),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
-        ),
+            disabledContainerColor = if (isSystemInDarkTheme()) Color.LightGray.copy(alpha = 0.5f) else Color.LightGray,
+
+            ),
         enabled = isEnabled,
         shape = RoundedCornerShape(10.dp),
 
@@ -357,11 +367,13 @@ fun ClickableTextComponent(
             fontWeight = FontWeight(600),
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
+                .bounceClick()
                 .padding(2.dp)
                 .clickable {
-                    onClick.invoke()
+                    onClick()
+
                 }
-                .bounceClick()
+
         )
     }
 }
@@ -393,7 +405,10 @@ fun LoaderComponent() {
         Box(
             modifier = Modifier
                 .size(120.dp)
-                .background(Color.White, shape = RoundedCornerShape(MaterialTheme.shapes.medium.topStart)),
+                .background(
+                    Color.White,
+                    shape = RoundedCornerShape(MaterialTheme.shapes.medium.topStart)
+                ),
             contentAlignment = Alignment.Center
         ) {
             @Suppress("DEPRECATION")
@@ -407,4 +422,64 @@ fun LoaderComponent() {
         }
 
     }
+}
+
+@Composable
+fun CircleImageView(
+    imgRes :Int,
+    contentDescription: String? = null,
+    size: DpSize = DpSize(100.dp, 100.dp)
+
+) {
+    Image(
+        painter = painterResource(id = imgRes),
+        contentDescription = contentDescription,
+        modifier = Modifier
+            .clip(CircleShape)
+            .padding(top = 15.dp, bottom = 10.dp)
+            .size(size)
+            .border(
+                1.5.dp, Brush.linearGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.primary,
+                        Color.Black
+                    )
+                ), CircleShape
+            ),
+        contentScale = ContentScale.FillBounds
+
+    )
+
+}
+
+
+@Composable
+fun SuccessLottie() {
+
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec
+            .RawRes(R.raw.success2)
+    )
+
+    val progress by animateLottieCompositionAsState(
+        composition,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true,
+        speed = 1f,
+        restartOnPlay = false
+
+    )
+
+    @Suppress("DEPRECATION")
+    LottieAnimation(
+        composition = composition,
+        progress = progress,
+        modifier = Modifier.fillMaxSize(0.5f),
+        contentScale = ContentScale.Fit
+
+
+    )
+
+
+
 }

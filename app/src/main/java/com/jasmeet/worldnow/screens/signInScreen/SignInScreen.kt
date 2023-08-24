@@ -1,10 +1,10 @@
 package com.jasmeet.worldnow.screens.signInScreen
 
+import android.util.Log
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +20,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
@@ -40,10 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jasmeet.worldnow.R
 import com.jasmeet.worldnow.appComponents.ButtonComponent
+import com.jasmeet.worldnow.appComponents.CircleImageView
 import com.jasmeet.worldnow.appComponents.ClickableTextComponent
 import com.jasmeet.worldnow.appComponents.EmailText
 import com.jasmeet.worldnow.appComponents.LoaderComponent
@@ -91,7 +87,7 @@ fun SignInScreen( ) {
     LaunchedEffect(key1 =imeState.value){
         if(imeState.value){
             scrollState.animateScrollTo(
-                scrollState.value + 400,
+                scrollState.maxValue,
                 animationSpec = tween(1000, easing = EaseInOut)
             )
         }
@@ -108,13 +104,12 @@ fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
-    val isTermsChecked = remember { mutableStateOf(false) }
-
     val isLoading = remember {
         mutableStateOf(false)
     }
     val containerColor = if (isSystemInDarkTheme()) Color.Black else Color.White
     val keyboardController = LocalSoftwareKeyboardController.current
+
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -125,25 +120,7 @@ fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "App Logo",
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .padding(top = 10.dp, bottom = 10.dp)
-                    .size(135.dp)
-                    .border(
-                        1.5.dp, Brush.linearGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.primary,
-                                Color.Black
-
-                            )
-                        ), CircleShape
-                    ),
-                contentScale = ContentScale.FillBounds
-
-            )
+            CircleImageView(imgRes = R.drawable.logo)
 
             Text(
                 text = "Continue with",
@@ -278,38 +255,13 @@ fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(end = 15.dp)
+                    .bounceClick()
                     .clickable {
-                        //TODO
+                        AppRouter.navigateTo(Screens.ForgotPasswordScreen)
                     }
                     .padding(10.dp)
-                    .bounceClick()
+
             )
-            Row(
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(start = 15.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Checkbox(
-                    checked = isTermsChecked.value,
-                    onCheckedChange = {
-                        isTermsChecked.value = it
-                    },
-                    modifier = Modifier.size(10.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-
-                Text(
-                    text = "Remember me",
-                    fontFamily = inter,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight(600),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center,
-                )
-            }
 
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -327,8 +279,11 @@ fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
                 clickableText = "Sign Up",
                 onClick = {
                     AppRouter.navigateTo(Screens.SignUpScreen)
+                    Log.d("TAGgg", "MainLayout: Clicked on Sign Up")
                 }
             )
+
+            Spacer(modifier = Modifier.height(10.dp))
 
         }
 

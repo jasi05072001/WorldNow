@@ -63,6 +63,7 @@ fun IntroScreen() {
     })
     val pageCount = imgList.size
 
+
     Box(
         modifier = Modifier
             .fillMaxWidth()

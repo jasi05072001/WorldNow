@@ -13,6 +13,7 @@ val helventica = FontFamily(
 )
 
 val inter = FontFamily(Font(R.font.inter))
+val workSans = FontFamily(Font(R.font.work_sans))
 
 // Set of Material typography styles to start with
 val Typography = Typography(
