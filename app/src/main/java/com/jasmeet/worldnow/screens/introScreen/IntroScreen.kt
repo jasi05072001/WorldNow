@@ -233,12 +233,9 @@ fun IntroScreen() {
                     fontWeight = FontWeight.W500
                 )
             }
-
-
             val textBtn = if (pagerState.currentPage == 2) "" else "Skip"
-
             TextButton(
-                onClick = { AppRouter.navigateTo(Screens.SignInScreen) },
+                onClick = { AppRouter.navigateTo(Screens.SignUpScreen) },
                 modifier = Modifier.padding(top = 8.dp)) {
                 Text(
                     text = textBtn,

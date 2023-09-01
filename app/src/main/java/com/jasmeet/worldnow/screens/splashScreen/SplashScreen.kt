@@ -25,14 +25,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jasmeet.worldnow.R
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.ui.theme.helventica
+import com.jasmeet.worldnow.viewModels.SplashViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(
+    splashViewModel: SplashViewModel = viewModel()
+) {
+
+    splashViewModel.checkForActiveSession()
+    val isUserLoggedIn = splashViewModel.isUserLoggedIn
 
     val scale = remember {
         Animatable(initialValue = 0f)
@@ -55,7 +62,13 @@ fun SplashScreen() {
 
             )
             delay(1500)
-            AppRouter.navigateTo(Screens.IntroScreen)
+
+            if (isUserLoggedIn.value == true) {
+                AppRouter.navigateTo(Screens.HomeScreen)
+
+            }else {
+                AppRouter.navigateTo(Screens.IntroScreen)
+            }
 
         }
     )

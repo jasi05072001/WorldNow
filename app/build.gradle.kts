@@ -78,6 +78,8 @@ dependencies {
     //firebase
     implementation(platform(libs.firebaseBom))
     implementation(libs.firebaseAuth)
+    implementation(libs.firebaseFirestore)
+    implementation(libs.play.services.auth)
 
     //viewModel Compose
     implementation(libs.viewModel)
@@ -98,6 +100,7 @@ dependencies {
     //system ui controller
     implementation(libs.system.ui.controller)
 
+    implementation(libs.coil.compose)
 }
 kapt{
     correctErrorTypes = true

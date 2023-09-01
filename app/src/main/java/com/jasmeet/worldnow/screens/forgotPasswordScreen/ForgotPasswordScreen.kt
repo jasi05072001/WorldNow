@@ -113,17 +113,18 @@ fun ForgotPasswordScreen(loginViewModel: SignInViewModel = hiltViewModel()) {
                     .height(40.dp),
                 title = {},
                 navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            AppRouter.navigateTo(Screens.SignInScreen)
+                    if (!resetPasswordState.value)
+                        IconButton(
+                            onClick = {
+                                AppRouter.navigateTo(Screens.SignInScreen)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBackIos,
+                                contentDescription = null,
+                                tint = color
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBackIos,
-                            contentDescription = null,
-                            tint = color
-                        )
-                    }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
@@ -315,7 +316,7 @@ private fun ResetPasswordUi(
             onclick = {
                 reset(email, loginViewModel, isLoading)
             },
-            text = "Login",
+            text = "Continue",
             isEnabled = email.value.trim().isNotEmpty(),
         )
 
