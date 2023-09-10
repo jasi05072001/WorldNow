@@ -20,6 +20,7 @@ import com.jasmeet.worldnow.screens.onBoarding.signInScreen.SignInScreen
 import com.jasmeet.worldnow.screens.onBoarding.signUpScreen.SignUpScreen
 import com.jasmeet.worldnow.screens.onBoarding.splashScreen.SplashScreen
 import com.jasmeet.worldnow.screens.settingAccount.selectCountry.CountrySelectionScreen
+import com.jasmeet.worldnow.screens.settingAccount.selectInterest.InterestSelectionScreen
 
 @Composable
 fun MainApp() {
@@ -41,6 +42,7 @@ fun MainApp() {
             val homeScreenVisible = currentScreen.value is Screens.HomeScreen
             val forgotPasswordScreenVisible = currentScreen.value is Screens.ForgotPasswordScreen
             val countrySelectionScreenVisible = currentScreen.value is Screens.SelectingCountryScreen
+            val intrestSelectionScreenVisible = currentScreen.value is Screens.SelectingIntrestScreen
 
             AnimatedVisibility(
                 visible= splashScreenVisible,
@@ -67,7 +69,7 @@ fun MainApp() {
 
             AnimatedVisibility(
                 visible = introScreenVisible,
-                enter = fadeIn() + slideInHorizontally(initialOffsetX = { -it },),
+                enter = fadeIn() + slideInHorizontally(initialOffsetX = { -it }),
                 exit = fadeOut() + slideOutHorizontally (targetOffsetX = { it })
             ) {
                 IntroScreen()
@@ -88,6 +90,13 @@ fun MainApp() {
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { -it })
             ) {
                 CountrySelectionScreen()
+            }
+            AnimatedVisibility(
+                visible = intrestSelectionScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                InterestSelectionScreen()
             }
         }
     }

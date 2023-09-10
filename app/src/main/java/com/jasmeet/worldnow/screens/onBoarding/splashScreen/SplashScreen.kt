@@ -57,14 +57,12 @@ fun SplashScreen(
                         OvershootInterpolator(0.8f).getInterpolation(it)
                     }
                 )
-
             )
-
             splashViewModel.checkForActiveSession()
             delay(1500)
 
             if (isUserLoggedIn.value == true) {
-                AppRouter.navigateTo(Screens.HomeScreen)
+                AppRouter.navigateTo(Screens.SelectingCountryScreen)
 
             }else {
                 AppRouter.navigateTo(Screens.IntroScreen)

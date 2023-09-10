@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -30,6 +29,8 @@ import com.jasmeet.worldnow.appComponents.ButtonComponent
 import com.jasmeet.worldnow.appComponents.SearchFieldComponent
 import com.jasmeet.worldnow.appComponents.Space
 import com.jasmeet.worldnow.data.countriesList
+import com.jasmeet.worldnow.navigation.AppRouter
+import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.ui.theme.inter
 
 @Composable
@@ -54,6 +55,10 @@ private fun CountrySelectionLayout() {
 
     val searchedText = remember {
         mutableStateOf("")
+    }
+
+    val filteredCountries = countriesList.filter {
+        it.contains(searchedText.value, ignoreCase = true)
     }
 
     Column(
@@ -91,11 +96,6 @@ private fun CountrySelectionLayout() {
             onValueChange ={
                 searchedText.value = it
             },
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    //TODO: Search for country
-                }
-            )
         )
 
         LazyColumn(
@@ -103,11 +103,11 @@ private fun CountrySelectionLayout() {
                 .padding(top = 15.dp, bottom = 15.dp)
                 .weight(0.75f)
         ){
-            items(countriesList.size){index ->
+            items(filteredCountries.size){index ->
                 CountrySelectionView(
-                    selectedCountry = countriesList[index],
+                    selectedCountry = filteredCountries[index],
                     onCountrySelected = {
-                        selectedCountry ->
+                            selectedCountry ->
                         country.value = selectedCountry
                         isCountrySelected.value = true
                     },
@@ -118,7 +118,12 @@ private fun CountrySelectionLayout() {
         }
 
         ButtonComponent(
-            onclick = { /*TODO*/ }, text = "Continue", isEnabled = isCountrySelected.value)
+            onclick = {
+                AppRouter.navigateTo(Screens.SelectingIntrestScreen)
+            },
+            text = "Continue",
+            isEnabled = isCountrySelected.value
+        )
         Space(height = 15.dp)
 
 

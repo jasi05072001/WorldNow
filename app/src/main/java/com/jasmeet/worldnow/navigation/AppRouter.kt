@@ -10,8 +10,8 @@ sealed class Screens{
     data object SignUpScreen :Screens()
     data object  ForgotPasswordScreen :Screens()
     data object IntroScreen :Screens()
-
     data object SelectingCountryScreen :Screens()
+    data object SelectingIntrestScreen :Screens()
     data object HomeScreen :Screens()
 }
 object AppRouter{
