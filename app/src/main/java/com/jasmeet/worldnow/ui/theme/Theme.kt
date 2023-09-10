@@ -14,9 +14,11 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     //color for button
-    primary =darkButtonColor,
+    primary = darkButtonColor,
     //color for background
     background = darkBackGround,
+    //color for text
+    onPrimary = darkButtonTextColor,
 
 )
 
@@ -24,7 +26,9 @@ private val LightColorScheme = lightColorScheme(
     //color for button
     primary = lightButtonColor,
     //color for background
-    background = lightBackground
+    background = lightBackground,
+    //color for text
+    onPrimary = lightButtonTextColor ,
 
 )
 

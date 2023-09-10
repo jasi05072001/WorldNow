@@ -14,12 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
-import com.jasmeet.worldnow.screens.forgotPasswordScreen.ForgotPasswordScreen
-import com.jasmeet.worldnow.screens.homeScreen.HomeScreen
-import com.jasmeet.worldnow.screens.introScreen.IntroScreen
-import com.jasmeet.worldnow.screens.signInScreen.SignInScreen
-import com.jasmeet.worldnow.screens.signUpScreen.SignUpScreen
-import com.jasmeet.worldnow.screens.splashScreen.SplashScreen
+import com.jasmeet.worldnow.screens.onBoarding.forgotPasswordScreen.ForgotPasswordScreen
+import com.jasmeet.worldnow.screens.onBoarding.introScreen.IntroScreen
+import com.jasmeet.worldnow.screens.onBoarding.signInScreen.SignInScreen
+import com.jasmeet.worldnow.screens.onBoarding.signUpScreen.SignUpScreen
+import com.jasmeet.worldnow.screens.onBoarding.splashScreen.SplashScreen
+import com.jasmeet.worldnow.screens.settingAccount.selectCountry.CountrySelectionScreen
 
 @Composable
 fun MainApp() {
@@ -40,6 +40,7 @@ fun MainApp() {
             val introScreenVisible = currentScreen.value is Screens.IntroScreen
             val homeScreenVisible = currentScreen.value is Screens.HomeScreen
             val forgotPasswordScreenVisible = currentScreen.value is Screens.ForgotPasswordScreen
+            val countrySelectionScreenVisible = currentScreen.value is Screens.SelectingCountryScreen
 
             AnimatedVisibility(
                 visible= splashScreenVisible,
@@ -82,11 +83,11 @@ fun MainApp() {
             }
 
             AnimatedVisibility(
-                visible = homeScreenVisible,
+                visible = countrySelectionScreenVisible,
                 enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { -it })
             ) {
-                 HomeScreen()
+                CountrySelectionScreen()
             }
         }
     }

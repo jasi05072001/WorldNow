@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.jasmeet.worldnow.screens.introScreen
+package com.jasmeet.worldnow.screens.onBoarding.introScreen
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween

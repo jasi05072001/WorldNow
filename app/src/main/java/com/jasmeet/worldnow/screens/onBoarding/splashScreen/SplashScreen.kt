@@ -1,4 +1,4 @@
-package com.jasmeet.worldnow.screens.splashScreen
+package com.jasmeet.worldnow.screens.onBoarding.splashScreen
 
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
@@ -37,8 +37,6 @@ import kotlinx.coroutines.delay
 fun SplashScreen(
     splashViewModel: SplashViewModel = viewModel()
 ) {
-
-    splashViewModel.checkForActiveSession()
     val isUserLoggedIn = splashViewModel.isUserLoggedIn
 
     val scale = remember {
@@ -61,6 +59,8 @@ fun SplashScreen(
                 )
 
             )
+
+            splashViewModel.checkForActiveSession()
             delay(1500)
 
             if (isUserLoggedIn.value == true) {

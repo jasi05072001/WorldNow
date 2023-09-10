@@ -1,4 +1,4 @@
-package com.jasmeet.worldnow.screens.forgotPasswordScreen
+package com.jasmeet.worldnow.screens.onBoarding.forgotPasswordScreen
 
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.tween

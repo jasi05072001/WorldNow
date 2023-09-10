@@ -20,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val auth: FirebaseAuth,
-    private val db: FirebaseFirestore
 ) : ViewModel() {
 
     private val _message = MutableStateFlow<String?>(null)

@@ -1,10 +1,9 @@
-package com.jasmeet.worldnow.screens.signInScreen
+package com.jasmeet.worldnow.screens.onBoarding.signUpScreen
 
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -72,10 +71,10 @@ import com.jasmeet.worldnow.rememberFirebaseAuthLauncher
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.utils.rememberImeState
 import com.jasmeet.worldnow.utils.saveUserInfo
-import com.jasmeet.worldnow.viewModels.SignInViewModel
+import com.jasmeet.worldnow.viewModels.SignUpViewModel
 
 @Composable
-fun SignInScreen( ) {
+fun SignUpScreen( ) {
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
 
@@ -106,8 +105,8 @@ fun SignInScreen( ) {
 }
 
 @Composable
-private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
-    val debouncedMessage by loginViewModel.message.collectAsState()
+private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
+    val debouncedMessage by signUpViewModel.message.collectAsState()
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -117,7 +116,6 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
     }
     val containerColor = if (isSystemInDarkTheme()) Color.Black else Color.White
     val keyboardController = LocalSoftwareKeyboardController.current
-
 
     val token = stringResource(R.string.default_web_client_id)
     val gso = remember {
@@ -145,17 +143,16 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
             )
             saveUserInfo(info)
             isLoading.value = false
-            AppRouter.navigateTo(Screens.HomeScreen)
+            AppRouter.navigateTo(Screens.SelectingCountryScreen)
 
         },
         onAuthError = {
             user.value = null
             isLoading.value = false
-            loginViewModel.setErrorMessage(it.message)
+            signUpViewModel.setErrorMessage(it.message)
 
         }
     )
-
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -181,6 +178,8 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
                 onClick = {
                     isLoading.value = true
                     launcher.launch(googleSignInClient.signInIntent)
+//                    isLoading.value = false
+
                 },
                 modifier = Modifier
                     .padding(start = 15.dp, end = 15.dp, top = 8.dp, bottom = 0.dp)
@@ -236,7 +235,7 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(
-                text = "Login to your Account",
+                text = "Create your Account",
                 fontFamily = inter,
                 fontSize = 24.sp,
                 fontWeight = FontWeight(600),
@@ -282,49 +281,31 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
                 keyboardActions = KeyboardActions(
                     onDone = {
                         if (email.value.trim().isNotEmpty() && password.value.trim().isNotEmpty()) {
-                            login(isLoading, loginViewModel, email, password)
+                            signUp(isLoading, signUpViewModel, email, password)
                         }
                         else{
                             keyboardController?.hide()
-                            loginViewModel.setErrorMessage("Please enter valid email and password")
+                            signUpViewModel.setErrorMessage("Please enter valid email and password")
                         }
                     }
                 )
             )
-
-            Text(
-                text = "Forgot Password?",
-                fontFamily = inter,
-                fontSize = 12.sp,
-                fontWeight = FontWeight(600),
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(end = 15.dp)
-                    .bounceClick()
-                    .clickable {
-                        AppRouter.navigateTo(Screens.ForgotPasswordScreen)
-                    }
-                    .padding(10.dp)
-
-            )
-
             Spacer(modifier = Modifier.height(25.dp))
 
             ButtonComponent(
                 onclick = {
-                    login(isLoading, loginViewModel, email, password)
+                    signUp(isLoading, signUpViewModel, email, password)
                 },
-                text = "Login",
+                text = "Sign up",
                 isEnabled = email.value.trim().isNotEmpty() && password.value.trim().isNotEmpty(),
             )
 
             Spacer(modifier = Modifier.height(15.dp))
             ClickableTextComponent(
-                initialText = "Don't have an account?",
-                clickableText = "Sign Up",
+                initialText = "Already have an account?",
+                clickableText = "Login",
                 onClick = {
-                    AppRouter.navigateTo(Screens.SignUpScreen)
+                    AppRouter.navigateTo(Screens.SignInScreen)
                 }
             )
 
@@ -353,19 +334,19 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
 
     }
 
-    if (isLoading.value || loginViewModel.isLoading.value) {
+    if (isLoading.value || signUpViewModel.isLoading.value) {
         LoaderComponent()
     }
 }
 
 
-private fun login(
+private fun signUp(
     isLoading: MutableState<Boolean>,
-    loginViewModel: SignInViewModel,
+    loginViewModel: SignUpViewModel,
     email: MutableState<String>,
     password: MutableState<String>
 ) {
     isLoading.value = true
-    loginViewModel.signIn(email.value, password.value)
+    loginViewModel.signUp(email.value, password.value)
     isLoading.value = false
 }

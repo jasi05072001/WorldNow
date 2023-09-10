@@ -2,23 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="HomeScre">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_6a_API_30.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-08-30T09:23:12.062046918Z" />
-        </State>
-      </entry>
-      <entry key="MainAppPreview">
+      <entry key="CountrySelectionPreview">
         <State />
       </entry>
       <entry key="app">
@@ -29,12 +13,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_6_Pro_API_31.avd" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-08-16T08:16:17.848645905Z" />
+          <timeTargetWasSelectedWithDropDown value="2023-09-09T11:55:10.238558698Z" />
         </State>
       </entry>
     </value>

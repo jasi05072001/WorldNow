@@ -7,12 +7,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,6 +54,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -241,7 +244,7 @@ fun ButtonComponent(
         modifier = Modifier
             .padding(horizontal = 15.dp)
             .fillMaxWidth()
-            .height(50.dp)
+            .wrapContentHeight()
             .then(
                 if (isEnabled)
                     Modifier.bounceClick()
@@ -251,8 +254,7 @@ fun ButtonComponent(
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             disabledContainerColor = if (isSystemInDarkTheme()) Color.LightGray.copy(alpha = 0.5f) else Color.LightGray,
-
-            ),
+        ),
         enabled = isEnabled,
         shape = RoundedCornerShape(10.dp),
 
@@ -479,7 +481,79 @@ fun SuccessLottie() {
 
 
     )
+}
+
+@Composable
+fun Space(height : Dp) {
+    Spacer(modifier = Modifier.height(height))
+}
 
 
+@Composable
+fun SearchFieldComponent(
+    value: String,
+    labelValue: String,
+    onValueChange: (String) -> Unit,
+    imeAction: ImeAction = ImeAction.Search,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    modifier: Modifier = Modifier,
 
+    ) {
+    ElevatedCard (
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 5.dp
+        ),
+        modifier = modifier
+            .heightIn(42.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp)
+    ){
+        TextField(
+            value = value,
+            onValueChange = {
+                onValueChange.invoke(it)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                disabledContainerColor = Color.White,
+                focusedIndicatorColor =  Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            placeholder = {
+                Text(
+                    text = labelValue,
+                    fontFamily = inter,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight(600),
+                    color = Color(0x80000000),
+                    textAlign = TextAlign.Center,
+                )
+            },
+            textStyle = TextStyle(
+                fontFamily = inter,
+                fontSize = 15.sp,
+                fontWeight = FontWeight(600),
+                color = Color.Black,
+
+                ),
+            keyboardActions = keyboardActions,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType,
+                imeAction = imeAction,
+                autoCorrect = false,
+            ),
+            maxLines = 1,
+            singleLine = true,
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.search) ,
+                    contentDescription = "Search",
+                    tint = Color(0xff215273)
+                )
+            }
+        )
+    }
 }

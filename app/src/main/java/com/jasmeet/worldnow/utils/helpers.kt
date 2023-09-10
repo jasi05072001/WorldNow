@@ -19,7 +19,7 @@ fun saveUserInfo(userInfo: UserInfo) {
         .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
         .set(userInfo)
         .addOnSuccessListener {
-            AppRouter.navigateTo(Screens.HomeScreen)
+            AppRouter.navigateTo(Screens.SelectingCountryScreen)
         }
         .addOnFailureListener { exception ->
             Log.d("Failure", "saveUserInfo: ${exception.message} ")
