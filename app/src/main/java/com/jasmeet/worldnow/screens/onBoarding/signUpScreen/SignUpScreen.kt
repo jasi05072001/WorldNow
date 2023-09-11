@@ -34,6 +34,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -106,12 +107,13 @@ fun SignUpScreen( ) {
 
 @Composable
 private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
+
     val debouncedMessage by signUpViewModel.message.collectAsState()
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
+    val email = rememberSaveable { mutableStateOf("") }
+    val password = rememberSaveable { mutableStateOf("") }
     val context = LocalContext.current
 
-    val isLoading = remember {
+    val isLoading = rememberSaveable {
         mutableStateOf(false)
     }
     val containerColor = if (isSystemInDarkTheme()) Color.Black else Color.White
@@ -126,11 +128,11 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
             .build()
     }
 
-    val googleSignInClient = remember {
+    val googleSignInClient = rememberSaveable {
         GoogleSignIn.getClient(context, gso)
     }
 
-    val user = remember { mutableStateOf(Firebase.auth.currentUser) }
+    val user = rememberSaveable { mutableStateOf(Firebase.auth.currentUser) }
 
     val launcher = rememberFirebaseAuthLauncher(
         onAuthComplete = {result ->
@@ -178,7 +180,6 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
                 onClick = {
                     isLoading.value = true
                     launcher.launch(googleSignInClient.signInIntent)
-//                    isLoading.value = false
 
                 },
                 modifier = Modifier
@@ -330,8 +331,6 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
             }
 
         }
-
-
     }
 
     if (isLoading.value || signUpViewModel.isLoading.value) {
