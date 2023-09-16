@@ -1,8 +1,6 @@
 package com.jasmeet.worldnow.ui.theme
 
 import android.app.Activity
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -22,7 +20,7 @@ private val DarkColorScheme = darkColorScheme(
     //color for text
     onPrimary = darkButtonTextColor,
 
-)
+    )
 
 private val LightColorScheme = lightColorScheme(
     //color for button
@@ -32,9 +30,8 @@ private val LightColorScheme = lightColorScheme(
     //color for text
     onPrimary = lightButtonTextColor ,
 
-)
+    )
 
-@RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun WorldNowTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

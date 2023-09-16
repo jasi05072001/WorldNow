@@ -130,7 +130,7 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
             .build()
     }
 
-    val googleSignInClient = rememberSaveable {
+    val googleSignInClient = remember {
         GoogleSignIn.getClient(context, gso)
     }
 

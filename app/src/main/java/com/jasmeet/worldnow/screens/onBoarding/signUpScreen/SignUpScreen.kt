@@ -120,7 +120,7 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val token = stringResource(R.string.default_web_client_id)
-    val gso = remember {
+    val gso = remember{
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(token)
             .requestEmail()
@@ -128,11 +128,11 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
             .build()
     }
 
-    val googleSignInClient = rememberSaveable {
+    val googleSignInClient = remember {
         GoogleSignIn.getClient(context, gso)
     }
 
-    val user = rememberSaveable { mutableStateOf(Firebase.auth.currentUser) }
+    val user = remember { mutableStateOf(Firebase.auth.currentUser) }
 
     val launcher = rememberFirebaseAuthLauncher(
         onAuthComplete = {result ->

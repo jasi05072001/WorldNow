@@ -1,5 +1,11 @@
 package com.jasmeet.worldnow.screens.settingAccount.selectInterest
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,14 +23,19 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -32,21 +43,67 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.jasmeet.worldnow.appComponents.ButtonComponent
 import com.jasmeet.worldnow.appComponents.Space
+import com.jasmeet.worldnow.appComponents.bounceClick
 import com.jasmeet.worldnow.data.InterestList
 import com.jasmeet.worldnow.data.interestList
+import com.jasmeet.worldnow.navigation.AppRouter
+import com.jasmeet.worldnow.navigation.Screens
+import com.jasmeet.worldnow.navigation.SystemBackButtonHandler
 import com.jasmeet.worldnow.ui.theme.inter
+import com.jasmeet.worldnow.viewModels.InterestsViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun InterestSelectionScreen() {
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
+    val isScreenComing = remember{
+        mutableStateOf(false)
+    }
+
+
+
+    AnimatedVisibility(
+        visible = isScreenComing.value,
+        enter =  fadeIn() +
+                slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(
+                        950,
+                        0,
+                        LinearEasing
+                    )
+                ) ,
+        modifier = Modifier.background(Brush.linearGradient(
+            colors = listOf(
+                Color(0xFF215776),
+                Color(0xFF32989b)
+            )
+
+        ))
     ) {
-        InterestSelectionLayout()
+
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            InterestSelectionLayout()
+
+        }
+
+
+    }
+
+    LaunchedEffect(Unit ){
+        delay(10)
+        isScreenComing.value = true
+    }
+
+    SystemBackButtonHandler {
+        AppRouter.navigateTo(Screens.SelectingCountryScreen)
 
     }
 }
@@ -57,6 +114,14 @@ fun InterestSelectionLayout() {
     val selectedItemCount = rememberSaveable(key = "selectedItemCount") {
         mutableIntStateOf(0)
     }
+
+    val selectedItems = rememberSaveable(key = "selectedItems") {
+        mutableStateOf(mutableListOf<InterestList>())
+    }
+
+    val selectedCountry = AppRouter.selectedCountry
+
+    val intrestsViewModel : InterestsViewModel = hiltViewModel()
 
     Column(
         modifier = Modifier
@@ -79,7 +144,7 @@ fun InterestSelectionLayout() {
 
         Text(
             text = "Select Your Interests(at-least 3)",
-            fontSize = 22.sp,
+            fontSize = 20.sp,
             fontFamily = inter,
             fontWeight = FontWeight(800),
             color = MaterialTheme.colorScheme.primary
@@ -90,48 +155,58 @@ fun InterestSelectionLayout() {
             columns = GridCells.Fixed(2),
             modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp, top = 10.dp, bottom = 10.dp)
-                .weight(1f),
+                .weight(0.25f),
             verticalArrangement = Arrangement.spacedBy(15.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp),
         ){
             items(interestList.size){ index ->
                 InterestItem(
                     interest = interestList[index],
-                    selectedItemCount = selectedItemCount
+                    selectedItemCount = selectedItemCount,
+                    selectedItems = selectedItems
                 )
             }
 
         }
 
+
         ButtonComponent(
             onclick = {
-                      //TODO: Implement the button click
-
             },
             text = "Continue",
             isEnabled = selectedItemCount.intValue >= 3,
         )
 
-        Space(height =15.dp)
+        Space(height = 15.dp)
     }
 
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun InterestItem(interest: InterestList, selectedItemCount: MutableIntState) {
+fun InterestItem(
+    interest: InterestList,
+    selectedItemCount: MutableIntState,
+    selectedItems: MutableState<MutableList<InterestList>>
+) {
     val isSelected = rememberSaveable(key = interest.interestName) {
         mutableStateOf(false)
     }
 
     ElevatedCard(
-        modifier =Modifier
+        modifier = Modifier
+            .bounceClick()
             .padding(2.dp)
+            .shadow(4.dp, RoundedCornerShape(20.dp), spotColor = Color.White)
             .then(
                 if (isSelected.value) {
-                    Modifier.background(
-                        Color(0xB3000000),RoundedCornerShape(20.dp)
-                    ).alpha(0.5f)
+                    Modifier
+                        .background(
+                            Color(0xB3000000), RoundedCornerShape(20.dp)
+                        )
+                        .alpha(0.5f)
+
+
                 } else {
                     Modifier
                 }
@@ -141,19 +216,21 @@ fun InterestItem(interest: InterestList, selectedItemCount: MutableIntState) {
                 LocalConfiguration.current.screenWidthDp.dp * 0.35f
             )
             .clip(RoundedCornerShape(20.dp))
+
             .selectable(
                 selected = isSelected.value,
                 onClick = {
                     isSelected.value = !isSelected.value
                     if (isSelected.value) {
-                        selectedItemCount.intValue ++
+                        selectedItemCount.intValue++
+                        selectedItems.value.add(interest)
                     } else {
-                        selectedItemCount.intValue --
+                        selectedItemCount.intValue--
+                        selectedItems.value.remove(interest)
                     }
                 }
             ),
     ) {
-
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter

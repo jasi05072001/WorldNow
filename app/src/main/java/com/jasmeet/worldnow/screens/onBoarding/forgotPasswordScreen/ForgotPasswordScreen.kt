@@ -22,8 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -120,7 +119,7 @@ fun ForgotPasswordScreen(loginViewModel: SignInViewModel = hiltViewModel()) {
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBackIos,
+                                imageVector = Icons.Default.ArrowBackIosNew,
                                 contentDescription = null,
                                 tint = color
                             )
@@ -223,7 +222,7 @@ private fun SuccessUi(color: Color, paddingValues: PaddingValues) {
             Spacer(modifier = Modifier.width(10.dp))
 
             Icon(
-                imageVector = Icons.Default.ArrowForward,
+                imageVector = Icons.Default.ArrowBackIosNew,
                 contentDescription = null,
                 tint = color,
                 modifier = Modifier.size(22.dp)

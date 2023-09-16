@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.gmsService)
+    alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.hiltAndroid)
-    alias(libs.plugins.kotlinKapt)
 
 }
 
@@ -90,8 +90,8 @@ dependencies {
 
     //hilt
     implementation(libs.hiltAndroid)
-    kapt(libs.hiltCompiler)
-    kapt(libs.hiltCompilerKapt)
+    ksp(libs.hiltCompiler)
+    ksp(libs.hiltCompilerKapt)
     implementation(libs.hiltNavigation)
 
     //glide
@@ -104,8 +104,10 @@ dependencies {
     implementation(libs.system.ui.controller)
 
     implementation(libs.coil.compose)
-}
-kapt{
-    correctErrorTypes = true
 
+    //room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.liveData)
+    ksp(libs.rooom.compiler)
 }

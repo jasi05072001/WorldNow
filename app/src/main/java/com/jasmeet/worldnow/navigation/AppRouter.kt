@@ -1,7 +1,9 @@
 package com.jasmeet.worldnow.navigation
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 sealed class Screens{
 
@@ -16,6 +18,8 @@ sealed class Screens{
 }
 object AppRouter{
     var currentScreen: MutableState<Screens> = mutableStateOf(Screens.SplashScreen)
+
+    var selectedCountry by mutableStateOf<String?>(null)
 
     fun navigateTo(destination: Screens){
         currentScreen.value = destination

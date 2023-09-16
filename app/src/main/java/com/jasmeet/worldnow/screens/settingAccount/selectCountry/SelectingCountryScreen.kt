@@ -1,6 +1,7 @@
 package com.jasmeet.worldnow.screens.settingAccount.selectCountry
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +36,7 @@ import com.jasmeet.worldnow.ui.theme.inter
 
 @Composable
 fun CountrySelectionScreen() {
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -45,7 +47,7 @@ fun CountrySelectionScreen() {
 }
 
 @Composable
-private fun CountrySelectionLayout() {
+private fun CountrySelectionLayout():String {
 
     val country = remember {
         mutableStateOf("")
@@ -120,6 +122,7 @@ private fun CountrySelectionLayout() {
         ButtonComponent(
             onclick = {
                 AppRouter.navigateTo(Screens.SelectingIntrestScreen)
+                AppRouter.selectedCountry = country.value
             },
             text = "Continue",
             isEnabled = isCountrySelected.value
@@ -128,6 +131,7 @@ private fun CountrySelectionLayout() {
 
 
     }
+    return country.value
 }
 
 @Composable
