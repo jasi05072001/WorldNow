@@ -1,7 +1,6 @@
 package com.jasmeet.worldnow.screens.settingAccount.selectCountry
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -121,7 +120,7 @@ private fun CountrySelectionLayout():String {
 
         ButtonComponent(
             onclick = {
-                AppRouter.navigateTo(Screens.SelectingIntrestScreen)
+                AppRouter.navigateTo(Screens.SelectingInterestScreen)
                 AppRouter.selectedCountry = country.value
             },
             text = "Continue",

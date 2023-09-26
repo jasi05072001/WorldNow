@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "898444993529-aba3o0lrjtd734om0ehvge1ikcpi0gft.apps.googleusercontent.com",
+          "client_id": "898444993529-oneq0rfa2tvtfgrncsf3cm4k3c8ls2ko.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.jasmeet.worldnow",
-            "certificate_hash": "99af7fb9b1fbe0e6cadb8aa3a5aee8d39087fa2b"
+            "certificate_hash": "f3a9a44c1e9d20a62b56dcb925b39bb3e650ef13"
           }
         },
         {

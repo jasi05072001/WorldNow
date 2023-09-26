@@ -110,4 +110,12 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.liveData)
     ksp(libs.rooom.compiler)
+
+    //gson
+    implementation(libs.gson)
+
+    //constraint layout
+    implementation(libs.constraintlayout)
+
+    implementation (libs.activity.ktx)
 }

@@ -29,6 +29,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,15 +58,13 @@ import com.jasmeet.worldnow.navigation.SystemBackButtonHandler
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.viewModels.InterestsViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun InterestSelectionScreen() {
     val isScreenComing = remember{
         mutableStateOf(false)
     }
-
-
-
     AnimatedVisibility(
         visible = isScreenComing.value,
         enter =  fadeIn() +
@@ -121,7 +120,9 @@ fun InterestSelectionLayout() {
 
     val selectedCountry = AppRouter.selectedCountry
 
-    val intrestsViewModel : InterestsViewModel = hiltViewModel()
+    val coroutineScope = rememberCoroutineScope()
+
+    val interestsViewModel : InterestsViewModel = hiltViewModel()
 
     Column(
         modifier = Modifier
@@ -172,6 +173,19 @@ fun InterestSelectionLayout() {
 
         ButtonComponent(
             onclick = {
+                coroutineScope.launch {
+                    selectedCountry?.let {
+                        interestsViewModel.addChoices(
+                            country = it,
+                            interests = selectedItems.value
+                        )
+                    }
+                    delay(500)
+                    AppRouter.navigateTo(Screens.ProfileScreen)
+
+                }
+
+
             },
             text = "Continue",
             isEnabled = selectedItemCount.intValue >= 3,

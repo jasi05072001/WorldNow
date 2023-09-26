@@ -14,11 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
+import com.jasmeet.worldnow.screens.homeScreen.HomeScreen
 import com.jasmeet.worldnow.screens.onBoarding.forgotPasswordScreen.ForgotPasswordScreen
 import com.jasmeet.worldnow.screens.onBoarding.introScreen.IntroScreen
 import com.jasmeet.worldnow.screens.onBoarding.signInScreen.SignInScreen
 import com.jasmeet.worldnow.screens.onBoarding.signUpScreen.SignUpScreen
 import com.jasmeet.worldnow.screens.onBoarding.splashScreen.SplashScreen
+import com.jasmeet.worldnow.screens.settingAccount.profile.ProfileScreen
 import com.jasmeet.worldnow.screens.settingAccount.selectCountry.CountrySelectionScreen
 import com.jasmeet.worldnow.screens.settingAccount.selectInterest.InterestSelectionScreen
 
@@ -42,7 +44,8 @@ fun MainApp() {
             val homeScreenVisible = currentScreen.value is Screens.HomeScreen
             val forgotPasswordScreenVisible = currentScreen.value is Screens.ForgotPasswordScreen
             val countrySelectionScreenVisible = currentScreen.value is Screens.SelectingCountryScreen
-            val interestSelectionScreenVisible = currentScreen.value is Screens.SelectingIntrestScreen
+            val interestSelectionScreenVisible = currentScreen.value is Screens.SelectingInterestScreen
+            val profileScreenVisible = currentScreen.value is Screens.ProfileScreen
 
             AnimatedVisibility(
                 visible= splashScreenVisible,
@@ -97,6 +100,22 @@ fun MainApp() {
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
                 InterestSelectionScreen()
+            }
+
+            AnimatedVisibility(
+                visible = profileScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                ProfileScreen()
+            }
+
+            AnimatedVisibility(
+                visible = homeScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                HomeScreen()
             }
         }
     }

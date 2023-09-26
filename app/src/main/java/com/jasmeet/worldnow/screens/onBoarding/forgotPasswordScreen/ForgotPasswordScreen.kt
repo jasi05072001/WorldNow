@@ -287,7 +287,8 @@ private fun ResetPasswordUi(
             modifier = Modifier
                 .padding(horizontal = 15.dp, vertical = 5.dp)
                 .fillMaxWidth()
-                .align(Alignment.Start)
+                .align(Alignment.Start),
+            text = "Email"
         )
 
         TextFieldComponent(
