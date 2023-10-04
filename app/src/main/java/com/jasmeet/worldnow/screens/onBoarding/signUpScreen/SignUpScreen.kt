@@ -259,6 +259,7 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
                 labelValue = "Enter your Email ID",
                 onValueChange = {
                     email.value = it
+                    AppRouter.email = email.value
                 },
                 keyboardType = KeyboardType.Email
             )
@@ -297,6 +298,7 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
             ButtonComponent(
                 onclick = {
                     signUp(isLoading, signUpViewModel, email, password)
+                    AppRouter.email = email.value
                 },
                 text = "Sign up",
                 isEnabled = email.value.trim().isNotEmpty() && password.value.trim().isNotEmpty(),

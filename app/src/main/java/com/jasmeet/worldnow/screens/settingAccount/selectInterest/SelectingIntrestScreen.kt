@@ -238,9 +238,11 @@ fun InterestItem(
                     if (isSelected.value) {
                         selectedItemCount.intValue++
                         selectedItems.value.add(interest)
+                        AppRouter.selectedInterest = selectedItems.value.map { it.interestName }
                     } else {
                         selectedItemCount.intValue--
                         selectedItems.value.remove(interest)
+                        AppRouter.selectedInterest = selectedItems.value.map { it.interestName }
                     }
                 }
             ),

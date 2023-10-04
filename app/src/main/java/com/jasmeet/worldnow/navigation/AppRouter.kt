@@ -22,6 +22,10 @@ object AppRouter{
 
     var selectedCountry by mutableStateOf<String?>(null)
 
+    var selectedInterest by mutableStateOf<List<String>?>(null)
+
+    var email by mutableStateOf<String?>(null)
+
     fun navigateTo(destination: Screens){
         currentScreen.value = destination
     }

@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.firebaseAuth)
     implementation(libs.firebaseFirestore)
     implementation(libs.play.services.auth)
+    implementation(libs.firebaseStorage)
 
     //viewModel Compose
     implementation(libs.viewModel)

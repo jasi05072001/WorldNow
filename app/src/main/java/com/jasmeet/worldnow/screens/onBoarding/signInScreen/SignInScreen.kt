@@ -350,10 +350,7 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
                     )
                 }
             }
-
         }
-
-
     }
 
     if (isLoading.value || loginViewModel.isLoading.value) {
