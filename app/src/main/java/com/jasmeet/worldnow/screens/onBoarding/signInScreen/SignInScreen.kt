@@ -65,7 +65,6 @@ import com.jasmeet.worldnow.appComponents.PasswordFieldComponent
 import com.jasmeet.worldnow.appComponents.PasswordText
 import com.jasmeet.worldnow.appComponents.TextFieldComponent
 import com.jasmeet.worldnow.appComponents.bounceClick
-import com.jasmeet.worldnow.data.UserInfo
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.navigation.SystemBackButtonHandler
@@ -139,13 +138,7 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
     val launcher = rememberFirebaseAuthLauncher(
         onAuthComplete = {result ->
             user.value = result.user
-            val info = UserInfo(
-                name = user.value?.displayName,
-                email = user.value?.email,
-                imgUrl = user.value?.photoUrl.toString(),
-                uid = user.value?.uid
-            )
-            saveUserInfo(info)
+            saveUserInfo(context)
             isLoading.value = false
             AppRouter.navigateTo(Screens.SelectingCountryScreen)
 

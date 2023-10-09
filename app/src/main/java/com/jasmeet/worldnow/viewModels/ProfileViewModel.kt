@@ -67,7 +67,7 @@ class ProfileViewModel
     ) {
         isLoading.value = true
         val storageRef = Firebase.storage.reference.child("profileImages")
-        val imageStream: InputStream? = contentResolver.openInputStream(imageUri)
+        val imageStream: InputStream? = imageUri.let { contentResolver.openInputStream(it) }
 
         imageStream?.use { inputStream ->
             val byteArrayOutputStream = ByteArrayOutputStream()

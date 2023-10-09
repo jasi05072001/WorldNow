@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
-import com.jasmeet.worldnow.screens.homeScreen.HomeScreen
+import com.jasmeet.worldnow.screens.home.mainScreenPage1.MainScreenPage1
 import com.jasmeet.worldnow.screens.onBoarding.forgotPasswordScreen.ForgotPasswordScreen
 import com.jasmeet.worldnow.screens.onBoarding.introScreen.IntroScreen
 import com.jasmeet.worldnow.screens.onBoarding.signInScreen.SignInScreen
@@ -108,6 +108,7 @@ fun MainApp() {
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
                 ProfileScreen()
+//                MainScreenPage1()
             }
 
             AnimatedVisibility(
@@ -115,7 +116,7 @@ fun MainApp() {
                 enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
-                HomeScreen()
+//                HomeScreen()
             }
         }
     }

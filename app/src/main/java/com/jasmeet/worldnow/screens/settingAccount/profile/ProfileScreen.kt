@@ -332,18 +332,24 @@ fun ProfileScreenLayout(profileViewModel: ProfileViewModel = hiltViewModel()) {
 
         ButtonComponent(
             onclick = {
-                isLoading.value = true
-                profileViewModel.saveUserInfo(
-                    name = name.value,
-                    email = emailValue,
-                    userName = userName.value,
-                    imageUri = photoUri!!,
-                    country = selectedCountry,
-                    interest = selectedInterest,
-                    contentResolver = context.contentResolver
-                )
+                if (photoUri == null){
+                    profileViewModel.setErrorMessage("Please select a profile picture")
+                    return@ButtonComponent
+                }
+                else {
+                    isLoading.value = true
+                    profileViewModel.saveUserInfo(
+                        name = name.value,
+                        email = emailValue,
+                        userName = userName.value,
+                        imageUri = photoUri!!,
+                        country = selectedCountry,
+                        interest = selectedInterest,
+                        contentResolver = context.contentResolver
+                    )
 
-                isLoading.value = false
+                    isLoading.value = false
+                }
             },
             text = "Continue",
             isEnabled = validateDetails(userName.value, name.value)

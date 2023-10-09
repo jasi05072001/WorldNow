@@ -62,7 +62,7 @@ fun SplashScreen(
             delay(1500)
 
             if (isUserLoggedIn.value == true) {
-                AppRouter.navigateTo(Screens.SelectingCountryScreen)
+                AppRouter.navigateTo(Screens.HomeScreen)
 
             }else {
                 AppRouter.navigateTo(Screens.IntroScreen)

@@ -1,16 +1,16 @@
 [versions]
-agp = "8.1.1"
+agp = "8.1.2"
 coilCompose = "2.4.0"
 kotlin = "1.9.10"
 core-ktx = "1.12.0"
 espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.6.2"
 activity-compose = "1.7.2"
-compose-bom = "2023.09.01"
+compose-bom = "2023.09.02"
 material-icons = "1.6.0-alpha06"
-hiltVersion = "2.48"
+hiltVersion = "2.48.1"
 firebaseBom = "32.3.1"
-liveData = "1.5.1"
+liveData = "1.5.2"
 glideVersion = "1.0.0-alpha.5"
 lottie = "6.0.0"
 room-version = "2.5.2"
@@ -61,6 +61,7 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-ver
 rooom-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-version" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson-version" }
 firebaseStorage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version = "2.9.0" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

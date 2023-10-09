@@ -11,6 +11,8 @@ import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.utils.saveUserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,18 +54,31 @@ class SignUpViewModel @Inject constructor(
 
     fun signUp(email: String, password: String) {
         isLoading.value = true
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                isLoading.value = false
-                if (task.isSuccessful) {
-                    saveUserInfo(
-                        userInfo = UserInfo(
-                            email = email,
-                            uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
-                        )
-                    )
+
+        if (email.trim().isEmpty() || password.trim().isEmpty()) {
+            setErrorMessage("Please fill all the fields")
+            isLoading.value = false
+            return
+        }
+        else if (password.length < 6) {
+            setErrorMessage("Password must be at least 6 characters")
+            isLoading.value = false
+            return
+        }
+        else if (!email.contains("@")) {
+            setErrorMessage("Please enter a valid email address")
+            isLoading.value = false
+            return
+        }
+        else{
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        AppRouter.navigateTo(Screens.SelectingCountryScreen)
+                        isLoading.value = false
+                    }
                 }
-            }
+        }
             .addOnFailureListener {
                 isLoading.value = false
                 _message.value = it.message
