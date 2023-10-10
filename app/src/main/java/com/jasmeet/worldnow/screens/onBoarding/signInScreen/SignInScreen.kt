@@ -72,6 +72,7 @@ import com.jasmeet.worldnow.rememberFirebaseAuthLauncher
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.utils.rememberImeState
 import com.jasmeet.worldnow.utils.saveUserInfo
+import com.jasmeet.worldnow.utils.saveUserInfoToSharedPrefs
 import com.jasmeet.worldnow.viewModels.SignInViewModel
 
 @Composable
@@ -140,7 +141,7 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
             user.value = result.user
             saveUserInfo(context)
             isLoading.value = false
-            AppRouter.navigateTo(Screens.SelectingCountryScreen)
+            saveUserInfoToSharedPrefs(user.value?.email.toString(),context)
 
         },
         onAuthError = {

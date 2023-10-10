@@ -62,7 +62,7 @@ fun SplashScreen(
             delay(1500)
 
             if (isUserLoggedIn.value == true) {
-                AppRouter.navigateTo(Screens.HomeScreen)
+                AppRouter.navigateTo(Screens.MainScreen1a)
 
             }else {
                 AppRouter.navigateTo(Screens.IntroScreen)

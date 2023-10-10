@@ -41,7 +41,7 @@ fun MainApp() {
             val signUpScreenVisible = currentScreen.value is Screens.SignUpScreen
             val signInScreenVisible = currentScreen.value is Screens.SignInScreen
             val introScreenVisible = currentScreen.value is Screens.IntroScreen
-            val homeScreenVisible = currentScreen.value is Screens.HomeScreen
+            val mainScreen1aVisible = currentScreen.value is Screens.MainScreen1a
             val forgotPasswordScreenVisible = currentScreen.value is Screens.ForgotPasswordScreen
             val countrySelectionScreenVisible = currentScreen.value is Screens.SelectingCountryScreen
             val interestSelectionScreenVisible = currentScreen.value is Screens.SelectingInterestScreen
@@ -108,15 +108,15 @@ fun MainApp() {
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
                 ProfileScreen()
-//                MainScreenPage1()
+
             }
 
             AnimatedVisibility(
-                visible = homeScreenVisible,
+                visible = mainScreen1aVisible,
                 enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
-//                HomeScreen()
+                MainScreenPage1()
             }
         }
     }

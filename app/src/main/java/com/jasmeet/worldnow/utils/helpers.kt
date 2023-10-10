@@ -52,3 +52,17 @@ fun saveUserInfo(context: Context) {
         Log.d("Info", "User not authenticated")
     }
 }
+
+fun saveUserInfoToSharedPrefs(email: String, context: Context) {
+    // save email to shared prefs
+    val sharedPrefs = context.getSharedPreferences("email", Context.MODE_PRIVATE)
+    val editor = sharedPrefs.edit()
+    editor.putString("email", email)
+    editor.apply()
+
+}
+
+fun returnEmailFromSharedPrefs(context: Context): String {
+    val sharedPrefs = context.getSharedPreferences("email", Context.MODE_PRIVATE)
+    return sharedPrefs.getString("email", "").toString()
+}

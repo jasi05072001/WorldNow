@@ -1,5 +1,6 @@
 package com.jasmeet.worldnow.screens.onBoarding.signUpScreen
 
+
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -64,7 +65,6 @@ import com.jasmeet.worldnow.appComponents.PasswordFieldComponent
 import com.jasmeet.worldnow.appComponents.PasswordText
 import com.jasmeet.worldnow.appComponents.TextFieldComponent
 import com.jasmeet.worldnow.appComponents.bounceClick
-import com.jasmeet.worldnow.data.UserInfo
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.navigation.SystemBackButtonHandler
@@ -72,6 +72,7 @@ import com.jasmeet.worldnow.rememberFirebaseAuthLauncher
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.utils.rememberImeState
 import com.jasmeet.worldnow.utils.saveUserInfo
+import com.jasmeet.worldnow.utils.saveUserInfoToSharedPrefs
 import com.jasmeet.worldnow.viewModels.SignUpViewModel
 
 @Composable
@@ -138,7 +139,7 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
         onAuthComplete = {result ->
             user.value = result.user
             saveUserInfo(context)
-            AppRouter.email = user.value?.email.toString()
+            saveUserInfoToSharedPrefs(user.value?.email.toString(),context)
             isLoading.value = false
             AppRouter.navigateTo(Screens.SelectingCountryScreen)
 
@@ -335,6 +336,8 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
         LoaderComponent()
     }
 }
+
+
 
 
 private fun signUp(

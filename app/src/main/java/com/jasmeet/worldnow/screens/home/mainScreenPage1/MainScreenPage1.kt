@@ -6,24 +6,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import kotlin.math.absoluteValue
 
 @Composable
-fun MainScreenPage1()
-{
+fun MainScreenPage1() {
     val sliderList = remember {
         mutableListOf(
             "https://www.gstatic.com/webp/gallery/1.webp",
@@ -67,10 +67,26 @@ fun CustomSlider(
                         scaleY = scaleFactor
                     }
                     .alpha(
-                        scaleFactor.coerceIn(0f, 1f)
+                        scaleFactor.coerceIn(0f, 1.5f)
                     )
 
                     .clip(RoundedCornerShape(5.dp))) {
+
+                    Row (
+                        modifier= Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
+                            .background(
+                                Brush.sweepGradient(
+                                    colors = listOf(Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Red)
+
+                                )
+                            )
+                    ){
+                        Text(
+                            text = "Page: $page",
+                            color = Color.Black)
+                    }
 
                     sliderList.forEach {
                         Column(

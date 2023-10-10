@@ -85,8 +85,10 @@ import com.jasmeet.worldnow.appComponents.Space
 import com.jasmeet.worldnow.appComponents.TextFieldComponent
 import com.jasmeet.worldnow.appComponents.bounceClick
 import com.jasmeet.worldnow.navigation.AppRouter
+import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.utils.rememberImeState
+import com.jasmeet.worldnow.utils.returnEmailFromSharedPrefs
 import com.jasmeet.worldnow.viewModels.ProfileViewModel
 
 @Composable
@@ -139,7 +141,7 @@ fun ProfileScreenLayout(profileViewModel: ProfileViewModel = hiltViewModel()) {
 
     val selectedCountry = AppRouter.selectedCountry?:""
     val selectedInterest = AppRouter.selectedInterest?: listOf()
-    val emailValue = AppRouter.email?: ""
+    val emailValue = returnEmailFromSharedPrefs(context = LocalContext.current)
 
     val userName = rememberSaveable { mutableStateOf("") }
     val name = rememberSaveable { mutableStateOf("") }
@@ -432,7 +434,10 @@ fun ProfileScreenLayout(profileViewModel: ProfileViewModel = hiltViewModel()) {
                         textAlign = TextAlign.Center
                     )
                     Space(height = 10.dp)
-                    Button(onClick = { /*TODO*/ },
+                    Button(
+                        onClick = {
+                            AppRouter.navigateTo(Screens.MainScreen1a)
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xffcff4d2),
                         ),
