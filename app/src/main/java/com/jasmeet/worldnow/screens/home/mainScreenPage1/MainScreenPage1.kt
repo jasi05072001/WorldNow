@@ -125,7 +125,9 @@ fun CategoriesLayout(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        Log.d("TAGER", "CategoriesLayout:${imgUrl.value} ")
+                    }) {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_menu),
                             contentDescription = "Menu",
