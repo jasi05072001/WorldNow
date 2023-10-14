@@ -1,6 +1,5 @@
 package com.jasmeet.worldnow.screens.settingAccount.selectInterest
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -40,6 +39,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -56,6 +56,7 @@ import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.navigation.SystemBackButtonHandler
 import com.jasmeet.worldnow.ui.theme.inter
+import com.jasmeet.worldnow.utils.saveCountryToSharedPrefs
 import com.jasmeet.worldnow.viewModels.InterestsViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -206,6 +207,7 @@ fun InterestItem(
     val isSelected = rememberSaveable(key = interest.interestName) {
         mutableStateOf(false)
     }
+    val context = LocalContext.current
 
     ElevatedCard(
         modifier = Modifier
@@ -239,10 +241,12 @@ fun InterestItem(
                         selectedItemCount.intValue++
                         selectedItems.value.add(interest)
                         AppRouter.selectedInterest = selectedItems.value.map { it.interestName }
+                        saveCountryToSharedPrefs(selectedItems.value.map { it.interestName }, context =  context)
                     } else {
                         selectedItemCount.intValue--
                         selectedItems.value.remove(interest)
                         AppRouter.selectedInterest = selectedItems.value.map { it.interestName }
+                        saveCountryToSharedPrefs(selectedItems.value.map { it.interestName }, context =  context)
                     }
                 }
             ),

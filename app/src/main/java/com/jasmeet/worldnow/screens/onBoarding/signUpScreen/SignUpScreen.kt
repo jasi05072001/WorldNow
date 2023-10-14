@@ -1,6 +1,7 @@
 package com.jasmeet.worldnow.screens.onBoarding.signUpScreen
 
 
+import android.content.Context
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -141,7 +142,6 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
             saveUserInfo(context)
             saveUserInfoToSharedPrefs(user.value?.email.toString(),context)
             isLoading.value = false
-            AppRouter.navigateTo(Screens.SelectingCountryScreen)
 
         },
         onAuthError = {
@@ -280,7 +280,7 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
                 keyboardActions = KeyboardActions(
                     onDone = {
                         if (email.value.trim().isNotEmpty() && password.value.trim().isNotEmpty()) {
-                            signUp(isLoading, signUpViewModel, email, password)
+                            signUp(isLoading, signUpViewModel, email, password,context)
                         }
                         else{
                             keyboardController?.hide()
@@ -293,7 +293,7 @@ private fun MainLayout(signUpViewModel: SignUpViewModel = hiltViewModel()) {
 
             ButtonComponent(
                 onclick = {
-                    signUp(isLoading, signUpViewModel, email, password)
+                    signUp(isLoading, signUpViewModel, email, password ,context)
                     AppRouter.email = email.value
                 },
                 text = "Sign up",
@@ -344,9 +344,11 @@ private fun signUp(
     isLoading: MutableState<Boolean>,
     loginViewModel: SignUpViewModel,
     email: MutableState<String>,
-    password: MutableState<String>
+    password: MutableState<String>,
+    context: Context
 ) {
     isLoading.value = true
     loginViewModel.signUp(email.value, password.value)
+    saveUserInfoToSharedPrefs(email.value,context)
     isLoading.value = false
 }

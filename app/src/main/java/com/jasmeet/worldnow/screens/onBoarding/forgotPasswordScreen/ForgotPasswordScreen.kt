@@ -102,13 +102,21 @@ fun ForgotPasswordScreen(loginViewModel: SignInViewModel = hiltViewModel()) {
     SystemBackButtonHandler {
         AppRouter.navigateTo(Screens.SignInScreen)
     }
+    LaunchedEffect(key1 =imeState.value){
+        if(imeState.value){
+            scrollState.animateScrollTo(
+                scrollState.maxValue,
+                animationSpec = tween(1000, easing = EaseInOut)
+            )
+        }
+    }
 
 
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
                 modifier = Modifier
-                    .padding(top = 12.dp)
+                    .padding(top = 30.dp)
                     .height(40.dp),
                 title = {},
                 navigationIcon = {
@@ -132,14 +140,6 @@ fun ForgotPasswordScreen(loginViewModel: SignInViewModel = hiltViewModel()) {
         }
 
     ){
-        LaunchedEffect(key1 =imeState.value){
-            if(imeState.value){
-                scrollState.animateScrollTo(
-                    scrollState.maxValue,
-                    animationSpec = tween(1000, easing = EaseInOut)
-                )
-            }
-        }
         if (!resetPasswordState.value) {
             ResetPasswordUi(
                 it,
