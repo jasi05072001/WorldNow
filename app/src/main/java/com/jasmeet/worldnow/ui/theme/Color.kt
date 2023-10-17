@@ -11,3 +11,6 @@ val darkButtonColor = Color(0xFF7CE495)
 
 val lightButtonTextColor = Color(0xFFCFF4D2)
 val darkButtonTextColor = Color(0xFF215273)
+
+val darkTextColor = Color(0xFFCFF4D2)
+val lightTextColor = Color(0xFF215273)

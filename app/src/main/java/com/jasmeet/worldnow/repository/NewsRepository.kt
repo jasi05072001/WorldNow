@@ -15,7 +15,7 @@ class NewsRepository(
         page :Int,
         successCallBack :(response :News?) ->Unit,
         failureCallback: (error: String) -> Unit,
-        pageSize :Int = 50
+        pageSize :Int = 70
     ){
 
         val result =  webService.getNews(query,page,pageSize).enqueue(object:Callback<News>{

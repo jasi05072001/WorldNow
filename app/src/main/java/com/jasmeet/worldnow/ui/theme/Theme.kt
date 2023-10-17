@@ -19,6 +19,7 @@ private val DarkColorScheme = darkColorScheme(
     background = darkBackGround,
     //color for text
     onPrimary = darkButtonTextColor,
+    onSurface = darkTextColor
 
     )
 
@@ -29,6 +30,7 @@ private val LightColorScheme = lightColorScheme(
     background = lightBackground,
     //color for text
     onPrimary = lightButtonTextColor ,
+    onSurface = lightTextColor
 
     )
 

@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.gmsService)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.parcelize)
+
 
 }
 
