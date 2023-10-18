@@ -23,6 +23,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -510,8 +511,9 @@ fun SearchFieldComponent(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     keyboardType: KeyboardType = KeyboardType.Text,
     modifier: Modifier = Modifier,
+    isIconVisible : Boolean = true
 
-    ) {
+) {
     ElevatedCard (
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 5.dp
@@ -560,11 +562,25 @@ fun SearchFieldComponent(
             maxLines = 1,
             singleLine = true,
             trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.search) ,
-                    contentDescription = "Search",
-                    tint = Color(0xff215273)
-                )
+                if (isIconVisible) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.search),
+                        contentDescription = "Search",
+                        tint = Color(0xff215273)
+                    )
+                }else if (value.trim().isNotEmpty()){
+                    IconButton(
+                        onClick = {
+                            onValueChange.invoke("")
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription = null,
+                            tint = Color.Black
+                        )
+                    }
+                }
             }
         )
     }

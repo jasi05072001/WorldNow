@@ -107,6 +107,22 @@ suspend fun getProfileImg():String = withContext(Dispatchers.IO) {
     }
 }
 
+suspend fun getSelectedInterests(): List<String> = withContext(Dispatchers.IO) {
+
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+    return@withContext if (userId != null){
+        val userCollection = FirebaseFirestore.getInstance().collection("users")
+        val docSnapShot = userCollection.document(userId).get().await()
+
+        val interests = docSnapShot.get("interest") as List<*>
+        interests as List<String>
+    }
+    else{
+        listOf()
+    }
+}
+
 fun removeWhitespaces(input: String): String {
     return input.replace("\\s".toRegex(), "")
 }

@@ -45,6 +45,7 @@ fun MainApp() {
             val countrySelectionScreenVisible = currentScreen.value is Screens.SelectingCountryScreen
             val interestSelectionScreenVisible = currentScreen.value is Screens.SelectingInterestScreen
             val profileScreenVisible = currentScreen.value is Screens.ProfileScreen
+            val detailedScreenVisible = currentScreen.value is Screens.DetailedScreen
 
             AnimatedVisibility(
                 visible= splashScreenVisible,
@@ -77,7 +78,6 @@ fun MainApp() {
                 IntroScreen()
             }
 
-
             AnimatedVisibility(
                 visible = forgotPasswordScreenVisible,
                 enter = fadeIn() + slideInHorizontally(initialOffsetX = { -it }),
@@ -107,7 +107,6 @@ fun MainApp() {
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
                 ProfileScreen()
-
             }
 
             AnimatedVisibility(
@@ -116,6 +115,13 @@ fun MainApp() {
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
                 MainScreenPage1()
+            }
+            AnimatedVisibility(
+                visible = detailedScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                DetailedScreen()
             }
         }
     }

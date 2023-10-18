@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -63,13 +65,16 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jasmeet.worldnow.R
+import com.jasmeet.worldnow.appComponents.SearchFieldComponent
 import com.jasmeet.worldnow.data.news.Article
+import com.jasmeet.worldnow.navigation.AppRouter
+import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.ui.theme.darkButtonColor
 import com.jasmeet.worldnow.ui.theme.helventica
 import com.jasmeet.worldnow.utils.getProfileImg
+import com.jasmeet.worldnow.utils.getSelectedInterests
 import com.jasmeet.worldnow.utils.removeBrackets
 import com.jasmeet.worldnow.utils.removeWhitespaces
-import com.jasmeet.worldnow.utils.returnCountryFromSharedPrefs
 import com.jasmeet.worldnow.viewModels.NewsViewModel
 
 @Composable
@@ -81,9 +86,14 @@ fun MainScreenPage1() {
 fun CategoriesLayout(
 ) {
     val newsViewModel = NewsViewModel()
-    val selectedInterests = returnCountryFromSharedPrefs(LocalContext.current)
     var selectedButton by remember { mutableIntStateOf(0) }
     val loading = remember { mutableStateOf(true) }
+
+    val interests = rememberSaveable { mutableStateOf(listOf<String>()) }
+
+    val isSearchVisible = rememberSaveable {
+        mutableStateOf(false)
+    }
 
     val rememberedNews = rememberSaveable {
         mutableStateOf(emptyList<Article>())
@@ -98,13 +108,16 @@ fun CategoriesLayout(
         mutableStateOf("")
     }
 
+
     LaunchedEffect(
         key1 = selectedButton,
         block = {
             loading.value = true
+            val fetchedInterests = getSelectedInterests()
+            interests.value = fetchedInterests
             imgUrl.value = getProfileImg()
             newsViewModel.getNews(
-                selectedInterests[selectedButton],
+                interests.value[selectedButton],
                 1,
                 successCallBack = {
                     for (article in it?.articles.orEmpty()) {
@@ -131,22 +144,37 @@ fun CategoriesLayout(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(
-                        text = stringResource(id = R.string.app_name).uppercase(),
-                        style = TextStyle(
-                            fontSize = 30.sp,
-                            lineHeight = 22.sp,
-                            fontFamily = helventica,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFCFF4D2),
-                            textAlign = TextAlign.Center,
+                    if (!isSearchVisible.value) {
+                        Text(
+                            text = stringResource(id = R.string.app_name).uppercase(),
+                            style = TextStyle(
+                                fontSize = 30.sp,
+                                lineHeight = 22.sp,
+                                fontFamily = helventica,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFCFF4D2),
+                                textAlign = TextAlign.Center,
+                            )
                         )
-                    )
+                    }else{
+                        SearchFieldComponent(
+                            value = newsSearched.value,
+                            labelValue ="What are you looking for?",
+                            onValueChange = {
+                                newsSearched.value = it
+                            },
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .height(50.dp),
+                            isIconVisible = false
+                        )
+                    }
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        Log.d("TAGER", "CategoriesLayout:${imgUrl.value} ")
-                    }) {
+                    IconButton(
+                        onClick = {
+                            Log.d("TAGER", "CategoriesLayout:${imgUrl.value} ")
+                        }) {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_menu),
                             contentDescription = "Menu",
@@ -157,10 +185,12 @@ fun CategoriesLayout(
                 },
                 actions = {
                     IconButton(
-                        onClick = { /*TODO*/ }
+                        onClick = {
+                            isSearchVisible.value = !isSearchVisible.value
+                        }
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.search),
+                            imageVector =if (!isSearchVisible.value) ImageVector.vectorResource(R.drawable.search) else Icons.Outlined.Cancel,
                             contentDescription = "Search News"
                         )
                     }
@@ -197,8 +227,8 @@ fun CategoriesLayout(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(selectedInterests.size) { index ->
-                        val buttonText = selectedInterests[index]
+                    items(interests.value.size) { index ->
+                        val buttonText = interests.value[index]
                         val isSelected = index == selectedButton
 
                         OutlinedButton(
@@ -237,7 +267,7 @@ fun CategoriesLayout(
                                 text = "No articles found",
                                 style = TextStyle(
                                     fontSize = 18.sp,
-                                    color = Color.Black
+                                    color = Color.Black,
                                 ),
                                 modifier = Modifier.align(Alignment.Center))
                         }
@@ -287,7 +317,14 @@ fun NewsItemLayout(articles: Article) {
         modifier = Modifier
             .fillMaxWidth()
             .height(LocalConfiguration.current.screenHeightDp.dp / 8)
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 15.dp)
+            .clickable {
+                AppRouter.detailedArticles = articles
+                       AppRouter.navigateTo(
+                           Screens.DetailedScreen
+                       )
+
+            },
         shape = RoundedCornerShape(10.dp),
         shadowElevation = 8.dp,
 
