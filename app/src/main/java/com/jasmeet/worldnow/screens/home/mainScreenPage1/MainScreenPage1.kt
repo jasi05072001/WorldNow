@@ -1,10 +1,11 @@
 package com.jasmeet.worldnow.screens.home.mainScreenPage1
 
 import android.content.Intent
-import android.util.Log
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -77,15 +78,18 @@ import com.jasmeet.worldnow.utils.removeBrackets
 import com.jasmeet.worldnow.utils.removeWhitespaces
 import com.jasmeet.worldnow.viewModels.NewsViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreenPage1() {
     CategoriesLayout()
 }
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesLayout(
 ) {
     val newsViewModel = NewsViewModel()
+    val currentDate = java.time.LocalDate.now().minusDays(5).toString()
     var selectedButton by remember { mutableIntStateOf(0) }
     val loading = remember { mutableStateOf(true) }
 
@@ -120,11 +124,6 @@ fun CategoriesLayout(
                 interests.value[selectedButton],
                 1,
                 successCallBack = {
-                    for (article in it?.articles.orEmpty()) {
-                        article.urlToImage.let { img ->
-                            Log.d("Launched", "CategoriesLayout: $img")
-                        }
-                    }
                     val newsFromApi = it!!.articles
                     rememberedNews.value = newsFromApi
 
@@ -134,7 +133,8 @@ fun CategoriesLayout(
                     loading.value = false
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
 
-                }
+                },
+                from = currentDate
             )
         }
     )
@@ -173,7 +173,7 @@ fun CategoriesLayout(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            Log.d("TAGER", "CategoriesLayout:${imgUrl.value} ")
+                            //TODO:ADD NAVIGATION DRAWER
                         }) {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_menu),
@@ -320,16 +320,15 @@ fun NewsItemLayout(articles: Article) {
             .padding(horizontal = 15.dp)
             .clickable {
                 AppRouter.detailedArticles = articles
-                       AppRouter.navigateTo(
-                           Screens.DetailedScreen
-                       )
+                AppRouter.navigateTo(
+                    Screens.DetailedScreen
+                )
 
             },
         shape = RoundedCornerShape(10.dp),
         shadowElevation = 8.dp,
 
         ) {
-        Log.d("TAGImg", "NewsItemLayout:$displayImg ")
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -357,9 +356,6 @@ fun NewsItemLayout(articles: Article) {
                         LocalConfiguration.current.screenWidthDp.dp / 3,
                         LocalConfiguration.current.screenHeightDp.dp / 8),
                 contentScale = ContentScale.FillBounds,
-                onError = {
-                    Log.d("Main", "NewsItemLayout: $it")
-                }
             )
             Column(modifier = Modifier.fillMaxSize()) {
 

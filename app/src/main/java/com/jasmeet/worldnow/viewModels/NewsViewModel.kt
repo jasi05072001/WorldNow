@@ -13,8 +13,9 @@ class NewsViewModel(
         page :Int,
         successCallBack :(response : News?) ->Unit,
         failureCallback: (error: String) -> Unit,
-        pagSize :Int = 70
+        pagSize :Int = 70,
+        from:String
     ){
-        repository.getNews(query,page,successCallBack,failureCallback,pagSize)
+        repository.getNews(query,page,successCallBack,failureCallback,pagSize,from)
     }
 }

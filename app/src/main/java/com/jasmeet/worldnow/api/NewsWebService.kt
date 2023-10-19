@@ -17,7 +17,8 @@ interface NewsApi {
     fun getHeadLines(
         @Query("q") q: String,
         @Query("page") page: Int,
-        @Query("pageSize") pageSize: Int
+        @Query("pageSize") pageSize: Int,
+        @Query("from")from:String
     ):Call<News>
 }
 class NewsWebService {
@@ -31,7 +32,7 @@ class NewsWebService {
         api = retrofit.create(NewsApi::class.java)
     }
 
-    fun getNews(q: String, page: Int,pageSize: Int): Call<News> {
-        return api.getHeadLines(q, page,pageSize)
+    fun getNews(q: String, page: Int,pageSize: Int,from: String): Call<News> {
+        return api.getHeadLines(q, page,pageSize,from)
     }
 }

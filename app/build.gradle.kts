@@ -126,8 +126,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofitGson)
 
-    //paging
-    implementation (libs.paging.runtime.ktx) // Use the latest version
-    implementation (libs.paging.compose )// Use the latest version
+    //custom chrome tab
+    implementation(libs.chromeCustomTabs)
 
 }
