@@ -1,4 +1,6 @@
-package com.jasmeet.worldnow.screens.mainScreen
+@file:Suppress("DEPRECATION")
+
+package com.jasmeet.worldnow.screens.home.categories
 
 import android.app.Activity
 import android.content.Context
@@ -6,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -120,7 +121,7 @@ fun DetailedScreenLayout() {
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            AppRouter.navigateTo(Screens.MainScreen1a)
+                            AppRouter.navigateTo(Screens.HomeScreen)
                         }
                     ) {
                         Icon(
@@ -251,7 +252,7 @@ fun DetailedScreenLayout() {
         }
     }
     SystemBackButtonHandler {
-        AppRouter.navigateTo(Screens.MainScreen1a)
+        AppRouter.navigateTo(Screens.HomeScreen)
     }
 }
 

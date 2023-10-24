@@ -147,7 +147,7 @@ private fun MainLayout(loginViewModel: SignInViewModel= hiltViewModel()) {
         onAuthError = {
             user.value = null
             isLoading.value = false
-            loginViewModel.setErrorMessage(it.message)
+            loginViewModel.setErrorMessage(it)
 
         }
     )

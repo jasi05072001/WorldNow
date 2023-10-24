@@ -13,8 +13,6 @@ firebaseBom = "32.4.0"
 liveData = "1.5.4"
 glideVersion = "1.0.0-alpha.5"
 lottie = "6.0.0"
-pagingCompose = "3.3.0-alpha02"
-pagingRuntimeKtx = "3.2.1"
 room-version = "2.6.0"
 kspVersion= "1.9.10-1.0.13"
 gms-services = "4.4.0"
@@ -26,6 +24,7 @@ material = "1.10.0"
 constraintlayout = "1.0.1"
 gson-version = "2.10.1"
 chromeCustomTabs = "1.6.0"
+
 
 
 
@@ -68,6 +67,7 @@ firebaseStorage = { group = "com.google.firebase", name = "firebase-storage-ktx"
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version = "2.9.0" }
 retrofitGson = { group = "com.squareup.retrofit2", name = "converter-gson", version = "2.9.0" }
 chromeCustomTabs = { group = "androidx.browser", name = "browser", version.ref = "chromeCustomTabs" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -21,7 +21,7 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun rememberFirebaseAuthLauncher(
     onAuthComplete: (AuthResult) -> Unit,
-    onAuthError: (ApiException) -> Unit
+    onAuthError: (String) -> Unit
 ): ManagedActivityResultLauncher<Intent, ActivityResult> {
     val scope = rememberCoroutineScope()
     return rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -35,11 +35,11 @@ fun rememberFirebaseAuthLauncher(
                     onAuthComplete(authResult)
                 }
             } catch (e: ApiException) {
-                onAuthError(e)
+                onAuthError(e.message.toString())
             }
         } else {
             val status = Status(result.resultCode)
-            onAuthError(ApiException(status)) // Handle case where sign-in is canceled or failed
+            onAuthError(ApiException(status).message.toString()) // Handle case where sign-in is canceled or failed
         }
     }
 }

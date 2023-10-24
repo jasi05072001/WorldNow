@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.jasmeet.worldnow.screens.settingAccount.profile
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -436,7 +438,7 @@ fun ProfileScreenLayout(profileViewModel: ProfileViewModel = hiltViewModel()) {
                     Space(height = 10.dp)
                     Button(
                         onClick = {
-                            AppRouter.navigateTo(Screens.MainScreen1a)
+                            AppRouter.navigateTo(Screens.HomeScreen)
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xffcff4d2),

@@ -57,6 +57,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -511,7 +512,8 @@ fun SearchFieldComponent(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     keyboardType: KeyboardType = KeyboardType.Text,
     modifier: Modifier = Modifier,
-    isIconVisible : Boolean = true
+    isIconVisible : Boolean = true,
+    fontsize : TextUnit = 15.sp
 
 ) {
     ElevatedCard (
@@ -540,7 +542,7 @@ fun SearchFieldComponent(
                 Text(
                     text = labelValue,
                     fontFamily = inter,
-                    fontSize = 15.sp,
+                    fontSize = fontsize,
                     fontWeight = FontWeight(600),
                     color = Color(0x80000000),
                     textAlign = TextAlign.Center,
@@ -548,7 +550,7 @@ fun SearchFieldComponent(
             },
             textStyle = TextStyle(
                 fontFamily = inter,
-                fontSize = 15.sp,
+                fontSize = fontsize,
                 fontWeight = FontWeight(600),
                 color = Color.Black,
 

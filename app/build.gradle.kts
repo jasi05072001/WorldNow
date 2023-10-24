@@ -37,6 +37,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -128,5 +129,6 @@ dependencies {
 
     //custom chrome tab
     implementation(libs.chromeCustomTabs)
+
 
 }

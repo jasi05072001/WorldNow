@@ -54,7 +54,7 @@ class SignInViewModel @Inject constructor(private val auth: FirebaseAuth) : View
                 isLoading.value = false
                 if (task.isSuccessful) {
                     _message.value = "Welcome back!"
-                    AppRouter.navigateTo(Screens.MainScreen1a)
+                    AppRouter.navigateTo(Screens.HomeScreen)
                 }
             }
             .addOnFailureListener {

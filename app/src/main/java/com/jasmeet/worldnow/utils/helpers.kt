@@ -17,19 +17,6 @@ fun showToast(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
-fun saveUserInfo(userInfo: UserInfo) {
-    val db = FirebaseFirestore.getInstance()
-    db.collection("users")
-        .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
-        .set(userInfo)
-        .addOnSuccessListener {
-            AppRouter.navigateTo(Screens.SelectingCountryScreen)
-        }
-        .addOnFailureListener { exception ->
-            Log.d("Failure", "saveUserInfo: ${exception.message} ")
-        }
-}
-
 fun saveUserInfo(context: Context) {
     val db = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -41,7 +28,7 @@ fun saveUserInfo(context: Context) {
         usersCollection.document(userId).get()
             .addOnSuccessListener { documentSnapshot: DocumentSnapshot ->
                 if (documentSnapshot.exists()) {
-                    AppRouter.navigateTo(Screens.MainScreen1a)
+                    AppRouter.navigateTo(Screens.HomeScreen)
                 } else {
                     AppRouter.navigateTo(Screens.SelectingCountryScreen)
                 }
@@ -78,35 +65,6 @@ fun saveCountryToSharedPrefs(country: List<String>, context: Context) {
 
 }
 
-fun returnCountryFromSharedPrefs(context: Context): List<String> {
-    val sharedPrefs = context.getSharedPreferences("country", Context.MODE_PRIVATE)
-    val country = sharedPrefs.getString("country", "").toString()
-    val countryList = country.split(",")
-    return removeSpecialCharacters(countryList)
-}
-
-fun removeSpecialCharacters(strings: List<String>): List<String> {
-    val pattern = Regex("[^A-Za-z0-9 ]") // Define a regex pattern to match special characters
-
-    return strings.map { originalString ->
-        pattern.replace(originalString, "") .trim()// Replace special characters with an empty string
-    }
-}
-suspend fun getProfileImg():String = withContext(Dispatchers.IO) {
-
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
-
-    return@withContext if (userId != null){
-        val userCollection = FirebaseFirestore.getInstance().collection("users")
-        val docSnapShot = userCollection.document(userId).get().await()
-
-        docSnapShot.getString("photoUrl").toString()
-    }
-    else{
-        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-    }
-}
-
 suspend fun getSelectedInterests(): List<String> = withContext(Dispatchers.IO) {
 
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -128,6 +86,25 @@ fun removeWhitespaces(input: String): String {
 }
 fun removeBrackets(input: String): String {
     return input.replace("[\\[\\]{}]", "")
+}
+
+//this function will return the pair of profile image and name
+suspend fun getProfileImgAndName(): Pair<String, String> = withContext(Dispatchers.IO) {
+
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+    return@withContext if (userId != null){
+        val userCollection = FirebaseFirestore.getInstance().collection("users")
+        val docSnapShot = userCollection.document(userId).get().await()
+
+        val name = docSnapShot.getString("name").toString()
+        val photoUrl = docSnapShot.getString("photoUrl").toString()
+
+        Pair(name, photoUrl)
+    }
+    else{
+        Pair("","")
+    }
 }
 
 

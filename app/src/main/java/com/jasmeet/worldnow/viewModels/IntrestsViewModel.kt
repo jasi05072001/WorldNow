@@ -26,16 +26,6 @@ class InterestsViewModel @Inject constructor(private val preferences: SharedPref
         }
     }
 
-    fun getChoices(): Pair<String?, MutableList<InterestList>> {
-        val json = preferences.getString("interests", null)
-        val country = preferences.getString("country", null)
-
-        val gson = Gson()
-        val interestsType = object : TypeToken<MutableList<InterestList>>() {}.type
-        val interests: MutableList<InterestList> = gson.fromJson(json, interestsType) ?: mutableListOf()
-
-        return Pair(country, interests)
-    }
 
 }
 

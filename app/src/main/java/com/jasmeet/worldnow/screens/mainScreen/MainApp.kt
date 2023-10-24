@@ -1,5 +1,7 @@
 package com.jasmeet.worldnow.screens.mainScreen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -14,7 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
-import com.jasmeet.worldnow.screens.home.mainScreenPage1.MainScreenPage1
+import com.jasmeet.worldnow.screens.home.categories.DetailedScreen
+import com.jasmeet.worldnow.screens.home.HomeScreen
+import com.jasmeet.worldnow.screens.home.HomeScreenLayout
 import com.jasmeet.worldnow.screens.onBoarding.forgotPasswordScreen.ForgotPasswordScreen
 import com.jasmeet.worldnow.screens.onBoarding.introScreen.IntroScreen
 import com.jasmeet.worldnow.screens.onBoarding.signInScreen.SignInScreen
@@ -24,6 +28,7 @@ import com.jasmeet.worldnow.screens.settingAccount.profile.ProfileScreen
 import com.jasmeet.worldnow.screens.settingAccount.selectCountry.CountrySelectionScreen
 import com.jasmeet.worldnow.screens.settingAccount.selectInterest.InterestSelectionScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainApp() {
 
@@ -40,12 +45,12 @@ fun MainApp() {
             val signUpScreenVisible = currentScreen.value is Screens.SignUpScreen
             val signInScreenVisible = currentScreen.value is Screens.SignInScreen
             val introScreenVisible = currentScreen.value is Screens.IntroScreen
-            val mainScreen1aVisible = currentScreen.value is Screens.MainScreen1a
             val forgotPasswordScreenVisible = currentScreen.value is Screens.ForgotPasswordScreen
             val countrySelectionScreenVisible = currentScreen.value is Screens.SelectingCountryScreen
             val interestSelectionScreenVisible = currentScreen.value is Screens.SelectingInterestScreen
             val profileScreenVisible = currentScreen.value is Screens.ProfileScreen
             val detailedScreenVisible = currentScreen.value is Screens.DetailedScreen
+            val homeScreenVisible = currentScreen.value is Screens.HomeScreen
 
             AnimatedVisibility(
                 visible= splashScreenVisible,
@@ -109,19 +114,26 @@ fun MainApp() {
                 ProfileScreen()
             }
 
-            AnimatedVisibility(
-                visible = mainScreen1aVisible,
-                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
-                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
-            ) {
-                MainScreenPage1()
-            }
+//            AnimatedVisibility(
+//                visible = categoriesScreenVisible,
+//                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+//                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+//            ) {
+//                CategoriesView()
+//            }
             AnimatedVisibility(
                 visible = detailedScreenVisible,
                 enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
                 DetailedScreen()
+            }
+            AnimatedVisibility(
+                visible = homeScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                HomeScreenLayout()
             }
         }
     }
