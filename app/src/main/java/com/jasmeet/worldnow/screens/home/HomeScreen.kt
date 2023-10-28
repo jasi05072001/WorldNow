@@ -373,6 +373,9 @@ fun HomeScreenLayout() {
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color(0xff215273)
                     ),
+                    actions = {
+
+                    }
 
                     )
             },
