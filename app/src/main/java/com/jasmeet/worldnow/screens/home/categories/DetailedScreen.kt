@@ -121,7 +121,7 @@ fun DetailedScreenLayout() {
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            AppRouter.navigateTo(Screens.HomeScreen)
+                            AppRouter.navigateTo(Screens.CategoriesScreen)
                         }
                     ) {
                         Icon(
@@ -252,7 +252,7 @@ fun DetailedScreenLayout() {
         }
     }
     SystemBackButtonHandler {
-        AppRouter.navigateTo(Screens.HomeScreen)
+        AppRouter.navigateTo(Screens.CategoriesScreen)
     }
 }
 

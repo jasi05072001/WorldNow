@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.screens.home.categories.DetailedScreen
-import com.jasmeet.worldnow.screens.home.HomeScreen
 import com.jasmeet.worldnow.screens.home.HomeScreenLayout
+import com.jasmeet.worldnow.screens.home.categories.CategoriesView
 import com.jasmeet.worldnow.screens.onBoarding.forgotPasswordScreen.ForgotPasswordScreen
 import com.jasmeet.worldnow.screens.onBoarding.introScreen.IntroScreen
 import com.jasmeet.worldnow.screens.onBoarding.signInScreen.SignInScreen
@@ -51,7 +51,7 @@ fun MainApp() {
             val profileScreenVisible = currentScreen.value is Screens.ProfileScreen
             val detailedScreenVisible = currentScreen.value is Screens.DetailedScreen
             val homeScreenVisible = currentScreen.value is Screens.HomeScreen
-
+            val categoriesScreenVisible = currentScreen.value is Screens.CategoriesScreen
             AnimatedVisibility(
                 visible= splashScreenVisible,
                 enter = fadeIn() + slideInHorizontally(initialOffsetX = { -it }),
@@ -114,13 +114,13 @@ fun MainApp() {
                 ProfileScreen()
             }
 
-//            AnimatedVisibility(
-//                visible = categoriesScreenVisible,
-//                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
-//                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
-//            ) {
-//                CategoriesView()
-//            }
+            AnimatedVisibility(
+                visible = categoriesScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                CategoriesView()
+            }
             AnimatedVisibility(
                 visible = detailedScreenVisible,
                 enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),

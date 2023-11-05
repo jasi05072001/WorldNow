@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabsIntent
@@ -34,9 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,20 +58,12 @@ import com.jasmeet.worldnow.R
 import com.jasmeet.worldnow.data.NavigationItem
 import com.jasmeet.worldnow.data.news.Article
 import com.jasmeet.worldnow.navigation.AppRouter
-import com.jasmeet.worldnow.screens.home.categories.CategoriesView
+import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.ui.theme.helventica
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.utils.getProfileImgAndName
-import com.jasmeet.worldnow.utils.getSelectedInterests
 import com.jasmeet.worldnow.viewModels.NewsViewModel
 import kotlinx.coroutines.launch
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun HomeScreen(){
-    HomeScreenLayout()
-
-}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class,
@@ -96,11 +85,7 @@ fun HomeScreenLayout() {
     val googleSignInClient = remember {
         GoogleSignIn.getClient(context, gso)
     }
-    val interests = rememberSaveable { mutableStateOf(listOf<String>()) }
-    val rememberedCategoriesNews = rememberSaveable {
-        mutableStateOf(emptyList<Article>())
-    }
-    val selectedButton = remember { mutableIntStateOf(0) }
+
 
 
     val newsViewModel = NewsViewModel()
@@ -108,8 +93,6 @@ fun HomeScreenLayout() {
     val rememberedNews = rememberSaveable {
         mutableStateOf(emptyList<Article>())
     }
-
-
 
     val pagerState = rememberPagerState(pageCount = {rememberedNews.value.size})
     val loading = rememberSaveable { mutableStateOf(true) }
@@ -143,63 +126,31 @@ fun HomeScreenLayout() {
     val isHomeScreen = rememberSaveable {
         mutableStateOf(true)
     }
-    val isCategoriesScreen = rememberSaveable {
-        mutableStateOf(false)
-    }
-    val isSavedScreen = rememberSaveable {
-        mutableStateOf(false)
-    }
-    val isSettingsScreen = rememberSaveable {
-        mutableStateOf(false)
-    }
-    val newsSearched = remember {
-        mutableStateOf("")
-    }
+
 
     val items = listOf(
         NavigationItem(
-            title = "Home",
-            selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_home_selected),
-            unselectedIcon = ImageVector.vectorResource(id = R.drawable.ic_home_unselected),
-            onItemClick = {
-                isHomeScreen.value = true
-                isCategoriesScreen.value = false
-                isSavedScreen.value = false
-                isSettingsScreen.value = false
-            }
-        ),
-        NavigationItem(
             title = "Categories",
-            selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_categories_selected),
-            unselectedIcon = ImageVector.vectorResource(id = R.drawable.ic_categories_unselected),
+            icon = ImageVector.vectorResource(id = R.drawable.ic_categories_unselected),
             onItemClick = {
-                isHomeScreen.value = false
-                isCategoriesScreen.value = true
-                isSavedScreen.value = false
-                isSettingsScreen.value = false
+                AppRouter.navigateTo(Screens.CategoriesScreen)
             }
         ),
         NavigationItem(
             title = "Saved",
-            selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_bookmark_selected),
-            unselectedIcon = ImageVector.vectorResource(id = R.drawable.ic_bookmark_unselected),
+            icon = ImageVector.vectorResource(id = R.drawable.ic_bookmark_unselected),
             onItemClick = {
-                isHomeScreen.value = false
-                isCategoriesScreen.value = false
-                isSavedScreen.value = true
-                isSettingsScreen.value = false
+                //TODO:    Add Saved Screen
+
             }
 
         ),
         NavigationItem(
             title = "Settings",
-            selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_settings_selected),
-            unselectedIcon = ImageVector.vectorResource(id = R.drawable.ic_settings_unselected),
+            icon = ImageVector.vectorResource(id = R.drawable.ic_settings_unselected),
             onItemClick = {
-                isHomeScreen.value = false
-                isCategoriesScreen.value = false
-                isSavedScreen.value = false
-                isSettingsScreen.value = true
+
+                //TODO: Add Settings Screen
             }
         ),
 
@@ -232,32 +183,7 @@ fun HomeScreenLayout() {
             }
         }
     )
-    LaunchedEffect(
-        key1 = isCategoriesScreen.value,
-        block = {
-            loading.value = true
-            interests.value = getSelectedInterests()
-            namePhotoPair.value= getProfileImgAndName()
-            newsViewModel.getNews(
-                interests.value[0],
-                1,
-                successCallBack = {
-                    val newsFromApi = it!!.articles
-                    rememberedCategoriesNews.value = newsFromApi
-                    loading.value = false
-                    Log.d("NewsButton", "HomeScreenLayout: $newsFromApi")
 
-                },
-                failureCallback = {
-                    loading.value = false
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-
-                },
-                from = currentDate,
-            )
-        }
-
-    )
 
 
     ModalNavigationDrawer(
@@ -284,7 +210,7 @@ fun HomeScreenLayout() {
                                 horizontal = 20.dp
                             )
                             .background(
-                                if (index == selectedIndex.intValue) Color(0xFF215273) else Color(
+                                Color(
                                     0xB355C595
                                 ),
                                 RoundedCornerShape(10.dp)
@@ -297,9 +223,10 @@ fun HomeScreenLayout() {
                                     fontSize = 20.sp,
                                     lineHeight = 22.sp,
                                     fontFamily = inter,
-                                    fontWeight = FontWeight(400),
+                                    fontWeight = FontWeight(700),
+                                    color = Color.Black
 
-                                    )
+                                )
 
                             )
                         },
@@ -313,19 +240,16 @@ fun HomeScreenLayout() {
                         },
                         icon = {
                             Icon(
-                                imageVector = if (index == selectedIndex.intValue) item.selectedIcon else item.unselectedIcon,
+                                imageVector = item.icon,
                                 contentDescription = item.title,
-                                modifier = Modifier.padding(start = 2.dp)
+                                modifier = Modifier.padding(start = 2.dp),
+                                tint = Color.Black
 
                             )
                         },
                         colors = NavigationDrawerItemDefaults.colors(
                             selectedContainerColor= Color.Transparent,
                             unselectedContainerColor= Color.Transparent,
-                            selectedIconColor = Color.White,
-                            unselectedIconColor = Color.Black,
-                            unselectedTextColor = Color.Black,
-                            selectedTextColor = Color.White,
 
                             ),
                         shape = RoundedCornerShape(10.dp)
@@ -377,36 +301,17 @@ fun HomeScreenLayout() {
 
                     }
 
-                    )
+                )
             },
         ){paddingValues ->
-            if (isHomeScreen.value){
-                HomeScreenMainView(
-                    loading = loading,
-                    paddingValues= paddingValues,
-                    pagerState = pagerState,
-                    rememberedNews = rememberedNews,
-                    context = context,
-                    isDark = isDark,
-                )
-            }
-            if (isCategoriesScreen.value){
-
-                CategoriesView(
-                    paddingValues,
-                    loading,
-                    interests,
-                    selectedButton,
-                    newsViewModel,
-                    rememberedCategoriesNews,
-                    context,
-                    currentDate,
-                    newsSearched
-                )
-
-
-            }
-
+            HomeScreenMainView(
+                loading = loading,
+                paddingValues= paddingValues,
+                pagerState = pagerState,
+                rememberedNews = rememberedNews,
+                context = context,
+                isDark = isDark,
+            )
         }
     }
 

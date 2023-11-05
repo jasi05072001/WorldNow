@@ -131,4 +131,6 @@ dependencies {
     implementation(libs.chromeCustomTabs)
 
 
+    implementation ("androidx.compose.runtime:runtime:1.0.0")
+
 }
