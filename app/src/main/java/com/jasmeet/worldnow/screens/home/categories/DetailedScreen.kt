@@ -141,7 +141,9 @@ fun DetailedScreenLayout() {
                         Icon(
                             imageVector = Icons.Outlined.BookmarkBorder,
                             contentDescription = "Add to bookmark",
-                            Modifier.size(30.dp)
+                            Modifier.size(30.dp),
+                            tint = Color.White
+
                         )
 
                     }
@@ -157,7 +159,8 @@ fun DetailedScreenLayout() {
                         Icon(
                             imageVector = Icons.Outlined.Share,
                             contentDescription = "Add to bookmark",
-                            Modifier.size(30.dp)
+                            Modifier.size(30.dp),
+                            tint = Color.White
 
                         )
                     }

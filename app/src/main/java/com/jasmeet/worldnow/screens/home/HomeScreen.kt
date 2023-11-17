@@ -7,17 +7,30 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,10 +52,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -52,6 +68,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.jasmeet.worldnow.R
@@ -63,6 +82,7 @@ import com.jasmeet.worldnow.ui.theme.helventica
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.utils.getProfileImgAndName
 import com.jasmeet.worldnow.viewModels.NewsViewModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -88,7 +108,7 @@ fun HomeScreenLayout() {
 
 
 
-    val newsViewModel = NewsViewModel()
+    val newsViewModel: NewsViewModel = hiltViewModel()
     val currentDate = java.time.LocalDate.now().minusDays(5).toString()
     val rememberedNews = rememberSaveable {
         mutableStateOf(emptyList<Article>())
@@ -140,8 +160,7 @@ fun HomeScreenLayout() {
             title = "Saved",
             icon = ImageVector.vectorResource(id = R.drawable.ic_bookmark_unselected),
             onItemClick = {
-                //TODO:    Add Saved Screen
-
+              AppRouter.navigateTo(Screens.SavedScreen)
             }
 
         ),
@@ -196,10 +215,76 @@ fun HomeScreenLayout() {
                     RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
                 )
             ) {
-                Surface(modifier = Modifier
+                Column(modifier = Modifier
                     .height(150.dp)
-                    .fillMaxWidth(),
-                    color = Color.Transparent) {
+                    .fillMaxWidth()
+                    .background(Color.Transparent),
+                    ) {
+
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.End) {
+                        IconButton(
+                            onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = Color.Black.copy(
+                                    alpha = 0.75f
+                                ),
+                                modifier = Modifier.size(35.dp)
+                            )
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                            .fillMaxWidth()
+                            .background(Color.Transparent),
+                        verticalAlignment = Alignment.CenterVertically,
+
+                    ) {
+
+                        val imgRequest = ImageRequest.Builder(context)
+                            .data(namePhotoPair.value.second)
+                            .crossfade(true)
+                            .crossfade(1000)
+                            .build()
+
+                    AsyncImage(
+                        model = imgRequest,
+                        contentDescription ="Profile",
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(90.dp)
+                            .border(2.dp, Color.White, CircleShape),
+
+                        contentScale =  ContentScale.FillBounds
+                        )
+
+                        Spacer(modifier = Modifier.width(15.dp))
+                        Text(
+                            text = namePhotoPair.value.first,
+                            style = TextStyle(
+                                fontSize = 20.sp,
+                                lineHeight = 22.sp,
+                                fontFamily = inter,
+                                fontWeight = FontWeight(700),
+                                color = Color.Black
+
+                            ),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(top = 20.dp)
+                        )
+                    }
+
+
 
                 }
                 items.forEachIndexed{index,item->

@@ -70,6 +70,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jasmeet.worldnow.R
@@ -77,6 +78,7 @@ import com.jasmeet.worldnow.appComponents.SearchFieldComponent
 import com.jasmeet.worldnow.data.news.Article
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
+import com.jasmeet.worldnow.room.NewsData
 import com.jasmeet.worldnow.ui.theme.darkButtonColor
 import com.jasmeet.worldnow.ui.theme.helventica
 import com.jasmeet.worldnow.utils.getProfileImgAndName
@@ -84,13 +86,20 @@ import com.jasmeet.worldnow.utils.getSelectedInterests
 import com.jasmeet.worldnow.utils.removeBrackets
 import com.jasmeet.worldnow.utils.removeWhitespaces
 import com.jasmeet.worldnow.viewModels.NewsViewModel
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesView() {
 
-    val newsViewModel = NewsViewModel()
+    val newsViewModel :NewsViewModel = hiltViewModel()
     val context = LocalContext.current
     val interests = rememberSaveable { mutableStateOf(listOf<String>()) }
 
@@ -171,7 +180,9 @@ fun CategoriesView() {
                                 newsSearched.value = it
                             },
                             isIconVisible = false,
-                            modifier = Modifier.height(48.dp).width(LocalConfiguration.current.screenWidthDp.dp * 0.8f),
+                            modifier = Modifier
+                                .height(48.dp)
+                                .width(LocalConfiguration.current.screenWidthDp.dp * 0.8f),
                             fontsize = 12.sp
                         )
                     }
@@ -357,7 +368,7 @@ fun CategoriesView() {
                                 }
                             } else {
                                 items(filteredArticles) { articles ->
-                                    NewsItemLayout(articles)
+                                    NewsItemLayout(articles,newsViewModel = newsViewModel)
                                 }
                             }
                         }
@@ -371,7 +382,11 @@ fun CategoriesView() {
 }
 
 @Composable
-fun NewsItemLayout(articles: Article) {
+fun NewsItemLayout(
+    articles: Article,
+    newsViewModel: NewsViewModel
+) {
+
     val context = LocalContext.current
     val imgUrl = if (articles.urlToImage.isNullOrEmpty()) "https://demofree.sirv.com/nope-not-here.jpg" else removeWhitespaces(articles.urlToImage)
     val displayImg = removeBrackets(imgUrl)
@@ -461,7 +476,19 @@ fun NewsItemLayout(articles: Article) {
                     }
 
                     IconButton(
-                        onClick = { /*TODO*/ }
+                        onClick = {
+                            newsViewModel.insertNews(
+                                newsData = NewsData(
+                                    title =  articles.title,
+                                    description = articles.description,
+                                    newsUrl = articles.url,
+                                    imageUrl =  if (articles.urlToImage.isNullOrEmpty()) "https://demofree.sirv.com/nope-not-here.jpg" else removeWhitespaces(articles.urlToImage),
+                                    savedAt = System.currentTimeMillis()
+
+                                )
+                            )
+                            Toast.makeText(context, "Article Saved", Toast.LENGTH_SHORT).show()
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.BookmarkBorder,
@@ -475,6 +502,7 @@ fun NewsItemLayout(articles: Article) {
         }
     }
 }
+
 
 
 

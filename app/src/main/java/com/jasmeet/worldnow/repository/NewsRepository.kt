@@ -5,10 +5,11 @@ import com.jasmeet.worldnow.data.news.News
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class NewsRepository(
-    private val webService :NewsWebService = NewsWebService()
-) {
+class NewsRepository @Inject constructor(
+    private val webService: NewsWebService
+)  {
 
     fun getNews(
         query :String,
