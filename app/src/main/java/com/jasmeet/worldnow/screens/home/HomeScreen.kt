@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabsIntent
@@ -16,7 +15,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,7 +39,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -82,7 +79,6 @@ import com.jasmeet.worldnow.ui.theme.helventica
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.utils.getProfileImgAndName
 import com.jasmeet.worldnow.viewModels.NewsViewModel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -160,7 +156,7 @@ fun HomeScreenLayout() {
             title = "Saved",
             icon = ImageVector.vectorResource(id = R.drawable.ic_bookmark_unselected),
             onItemClick = {
-              AppRouter.navigateTo(Screens.SavedScreen)
+                AppRouter.navigateTo(Screens.SavedScreen)
             }
 
         ),
@@ -219,7 +215,7 @@ fun HomeScreenLayout() {
                     .height(150.dp)
                     .fillMaxWidth()
                     .background(Color.Transparent),
-                    ) {
+                ) {
 
                     Row(modifier = Modifier
                         .fillMaxWidth()
@@ -249,7 +245,7 @@ fun HomeScreenLayout() {
                             .background(Color.Transparent),
                         verticalAlignment = Alignment.CenterVertically,
 
-                    ) {
+                        ) {
 
                         val imgRequest = ImageRequest.Builder(context)
                             .data(namePhotoPair.value.second)
@@ -257,15 +253,15 @@ fun HomeScreenLayout() {
                             .crossfade(1000)
                             .build()
 
-                    AsyncImage(
-                        model = imgRequest,
-                        contentDescription ="Profile",
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(90.dp)
-                            .border(2.dp, Color.White, CircleShape),
+                        AsyncImage(
+                            model = imgRequest,
+                            contentDescription ="Profile",
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(90.dp)
+                                .border(2.dp, Color.White, CircleShape),
 
-                        contentScale =  ContentScale.FillBounds
+                            contentScale =  ContentScale.FillBounds
                         )
 
                         Spacer(modifier = Modifier.width(15.dp))

@@ -20,6 +20,8 @@ sealed class Screens{
     data object CategoriesScreen :Screens()
 
     data object SavedScreen :Screens()
+
+    data object SavedDetailsArticlesScreen :Screens()
 }
 object AppRouter{
     var currentScreen: MutableState<Screens> = mutableStateOf(Screens.SplashScreen)
@@ -31,6 +33,8 @@ object AppRouter{
     var email by mutableStateOf<String?>(null)
 
     var detailedArticles by mutableStateOf<Article?>(null)
+
+    var savedDetailedArticles by mutableStateOf<Article?>(null)
 
     fun navigateTo(destination: Screens){
         currentScreen.value = destination

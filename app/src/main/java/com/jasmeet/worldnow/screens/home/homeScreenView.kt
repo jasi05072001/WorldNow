@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,7 +42,6 @@ import com.jasmeet.worldnow.appComponents.bounceClick
 import com.jasmeet.worldnow.data.news.Article
 import com.jasmeet.worldnow.ui.theme.darkButtonColor
 import kotlin.math.absoluteValue
-
 
 
 @Composable

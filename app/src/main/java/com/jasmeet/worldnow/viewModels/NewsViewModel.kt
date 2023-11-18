@@ -27,9 +27,14 @@ class NewsViewModel @Inject constructor(
     private val _newsList = MutableLiveData<List<NewsData>>()
     val newsList: LiveData<List<NewsData>> get() = _newsList
 
+    private val _singleNewsItem = MutableLiveData<NewsData?>()
+    val singleNewsItem: LiveData<NewsData?> get() = _singleNewsItem
+
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
+
+
 
     fun getNews(
         query :String,
@@ -65,7 +70,7 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch {
             try{
                 val newsData = savedNewsRepository.getNewsDataById(savedAt)
-                _newsList.value = listOf(newsData)
+                _singleNewsItem.postValue(newsData)
             }catch (e:Exception){
                 _errorMessage.value = "Failed to save news: ${e.message}"
             }
@@ -88,6 +93,7 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch {
             try{
                 savedNewsRepository.deleteNewsDataById(savedAt)
+                getAllNewsData()
             }catch (e:Exception){
                 _errorMessage.value = "Failed to delete news: ${e.message}"
             }

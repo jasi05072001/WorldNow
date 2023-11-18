@@ -1,6 +1,7 @@
 [versions]
 agp = "8.1.2"
 coilCompose = "2.5.0"
+junit = "4.13.2"
 kotlin = "1.9.10"
 core-ktx = "1.12.0"
 espresso-core = "3.5.1"
@@ -18,12 +19,14 @@ kspVersion= "1.9.10-1.0.13"
 gms-services = "4.4.0"
 hilt-android-compiler = "1.1.0"
 playServicesAuth = "20.7.0"
+runtime = "1.0.0"
 systemUiController = "0.33.2-alpha"
 appcompat = "1.6.1"
 material = "1.10.0"
 constraintlayout = "1.0.1"
 gson-version = "2.10.1"
 chromeCustomTabs = "1.7.0"
+threetenabp = "1.2.4"
 
 
 
@@ -33,10 +36,13 @@ activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activ
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+junit = { module = "junit:junit", version.ref = "junit" }
 lifecycle-runtime-kt = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+runtime = { module = "androidx.compose.runtime:runtime", version.ref = "runtime" }
+threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }

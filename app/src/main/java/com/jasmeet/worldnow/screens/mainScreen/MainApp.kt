@@ -18,8 +18,9 @@ import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.screens.home.categories.DetailedScreen
 import com.jasmeet.worldnow.screens.home.HomeScreenLayout
-import com.jasmeet.worldnow.screens.home.SavedScreen
+import com.jasmeet.worldnow.screens.home.saved.SavedScreen
 import com.jasmeet.worldnow.screens.home.categories.CategoriesView
+import com.jasmeet.worldnow.screens.home.saved.SavedDetailedScreen
 import com.jasmeet.worldnow.screens.onBoarding.forgotPasswordScreen.ForgotPasswordScreen
 import com.jasmeet.worldnow.screens.onBoarding.introScreen.IntroScreen
 import com.jasmeet.worldnow.screens.onBoarding.signInScreen.SignInScreen
@@ -54,6 +55,7 @@ fun MainApp() {
             val homeScreenVisible = currentScreen.value is Screens.HomeScreen
             val categoriesScreenVisible = currentScreen.value is Screens.CategoriesScreen
             val savedScreenVisible = currentScreen.value is Screens.SavedScreen
+            val savedDetailedScreenVisible = currentScreen.value is Screens.SavedDetailsArticlesScreen
 
 
             AnimatedVisibility(
@@ -146,6 +148,13 @@ fun MainApp() {
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
                 SavedScreen()
+            }
+            AnimatedVisibility(
+                visible = savedDetailedScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                SavedDetailedScreen()
             }
         }
     }

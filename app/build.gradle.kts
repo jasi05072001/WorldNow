@@ -131,6 +131,12 @@ dependencies {
     implementation(libs.chromeCustomTabs)
 
 
-    implementation ("androidx.compose.runtime:runtime:1.0.0")
+    implementation (libs.runtime)
+
+    //Junit-4
+    testImplementation(libs.junit)
+
+    implementation (libs.threetenabp)
+
 
 }
