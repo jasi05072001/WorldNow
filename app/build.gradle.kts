@@ -138,5 +138,8 @@ dependencies {
 
     implementation (libs.threetenabp)
 
+    //dataStore
+    implementation (libs.datastore.preferences)
+
 
 }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.jasmeet.worldnow.WorldNowApplication
 import com.jasmeet.worldnow.api.NewsWebService
 import com.jasmeet.worldnow.repository.NewsRepository
 import com.jasmeet.worldnow.repository.SavedNewsRepository
@@ -74,6 +75,7 @@ object AppModule {
     fun provideNewsRepository(webService: NewsWebService): NewsRepository {
         return NewsRepository(webService)
     }
+
 
 
 

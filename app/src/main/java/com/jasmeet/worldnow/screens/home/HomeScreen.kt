@@ -13,6 +13,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -165,7 +166,7 @@ fun HomeScreenLayout() {
             icon = ImageVector.vectorResource(id = R.drawable.ic_settings_unselected),
             onItemClick = {
 
-                //TODO: Add Settings Screen
+                AppRouter.navigateTo(Screens.SettingsScreen)
             }
         ),
 
@@ -220,7 +221,8 @@ fun HomeScreenLayout() {
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                        horizontalArrangement = Arrangement.End) {
+                        horizontalArrangement = Arrangement.End
+                    ) {
                         IconButton(
                             onClick = {
                                 scope.launch {
@@ -241,6 +243,9 @@ fun HomeScreenLayout() {
                     Row(
                         modifier = Modifier
                             .padding(horizontal = 20.dp)
+                            .clickable {
+                                AppRouter.navigateTo(Screens.EditProfileScreen)
+                            }
                             .fillMaxWidth()
                             .background(Color.Transparent),
                         verticalAlignment = Alignment.CenterVertically,

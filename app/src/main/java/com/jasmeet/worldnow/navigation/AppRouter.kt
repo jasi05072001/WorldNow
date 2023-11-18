@@ -18,10 +18,12 @@ sealed class Screens{
     data object ProfileScreen :Screens()
     data object HomeScreen :Screens()
     data object CategoriesScreen :Screens()
-
     data object SavedScreen :Screens()
-
     data object SavedDetailsArticlesScreen :Screens()
+    data object SettingsScreen :Screens()
+    data object EditProfileScreen :Screens()
+
+
 }
 object AppRouter{
     var currentScreen: MutableState<Screens> = mutableStateOf(Screens.SplashScreen)

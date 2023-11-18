@@ -14,13 +14,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.jasmeet.worldnow.dataStore.DataStoreUtil
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
-import com.jasmeet.worldnow.screens.home.categories.DetailedScreen
 import com.jasmeet.worldnow.screens.home.HomeScreenLayout
-import com.jasmeet.worldnow.screens.home.saved.SavedScreen
 import com.jasmeet.worldnow.screens.home.categories.CategoriesView
+import com.jasmeet.worldnow.screens.home.categories.DetailedScreen
 import com.jasmeet.worldnow.screens.home.saved.SavedDetailedScreen
+import com.jasmeet.worldnow.screens.home.saved.SavedScreen
+import com.jasmeet.worldnow.screens.home.settings.SettingsScreen
+import com.jasmeet.worldnow.screens.home.updateProfile.EditProfileScreen
 import com.jasmeet.worldnow.screens.onBoarding.forgotPasswordScreen.ForgotPasswordScreen
 import com.jasmeet.worldnow.screens.onBoarding.introScreen.IntroScreen
 import com.jasmeet.worldnow.screens.onBoarding.signInScreen.SignInScreen
@@ -29,10 +33,13 @@ import com.jasmeet.worldnow.screens.onBoarding.splashScreen.SplashScreen
 import com.jasmeet.worldnow.screens.settingAccount.profile.ProfileScreen
 import com.jasmeet.worldnow.screens.settingAccount.selectCountry.CountrySelectionScreen
 import com.jasmeet.worldnow.screens.settingAccount.selectInterest.InterestSelectionScreen
+import com.jasmeet.worldnow.viewModels.ThemeViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainApp() {
+fun MainApp(dataStoreUtil: DataStoreUtil, themeViewModel: ThemeViewModel) {
+
+    val context = LocalContext.current
 
     Surface(
         modifier = Modifier
@@ -56,6 +63,8 @@ fun MainApp() {
             val categoriesScreenVisible = currentScreen.value is Screens.CategoriesScreen
             val savedScreenVisible = currentScreen.value is Screens.SavedScreen
             val savedDetailedScreenVisible = currentScreen.value is Screens.SavedDetailsArticlesScreen
+            val settingsScreenVisible = currentScreen.value is Screens.SettingsScreen
+            val editProfileScreenVisible = currentScreen.value is Screens.EditProfileScreen
 
 
             AnimatedVisibility(
@@ -155,6 +164,20 @@ fun MainApp() {
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
                 SavedDetailedScreen()
+            }
+            AnimatedVisibility(
+                visible = settingsScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                SettingsScreen(dataStoreUtil, themeViewModel)
+            }
+            AnimatedVisibility(
+                visible = editProfileScreenVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                EditProfileScreen()
             }
         }
     }
