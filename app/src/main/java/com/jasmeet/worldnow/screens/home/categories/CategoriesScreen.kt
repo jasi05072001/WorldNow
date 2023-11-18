@@ -14,7 +14,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +36,6 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -55,9 +53,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -74,12 +70,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jasmeet.worldnow.R
+import com.jasmeet.worldnow.appComponents.NotFoundComponent
 import com.jasmeet.worldnow.appComponents.SearchFieldComponent
 import com.jasmeet.worldnow.data.news.Article
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.room.NewsData
-import com.jasmeet.worldnow.ui.theme.darkButtonColor
 import com.jasmeet.worldnow.ui.theme.helventica
 import com.jasmeet.worldnow.utils.getProfileImgAndName
 import com.jasmeet.worldnow.utils.getSelectedInterests
@@ -259,15 +255,7 @@ fun CategoriesView() {
                 .padding(paddingValues)
         ) {
             if (loading.value) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .align(Alignment.Center),
-                    trackColor = Color.Gray,
-                    color = darkButtonColor,
-                    strokeCap = StrokeCap.Butt,
-                    strokeWidth = 5.dp
-                )
+                LoadingCategoriesListShimmer(paddingValues= paddingValues)
 
             }
             Column(modifier = Modifier.fillMaxSize()) {
@@ -326,45 +314,30 @@ fun CategoriesView() {
                                 && articles.title.contains(newsSearched.value, ignoreCase = true)
                     }
                     if (filteredArticles.isEmpty()) {
-                        Box(
+                        Column(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(Color.White)
                         ) {
-                            Text(
-                                text = "No articles found",
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    color = Color.Black,
-                                ),
-                                modifier = Modifier.align(Alignment.Center)
+                            NotFoundComponent(
+                                modifier = Modifier.height(
+                                    LocalConfiguration.current.screenHeightDp.dp / 2
+                                )
                             )
                         }
 
                     } else {
                         LazyColumn(
-
                             modifier = Modifier
                                 .padding(bottom = 15.dp)
                                 .height(LocalConfiguration.current.screenHeightDp.dp),
                             verticalArrangement = Arrangement.spacedBy(18.dp),
                         ) {
-                            if (filteredArticles.isEmpty()) {
-                                item {
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(Color.White)
-                                    ) {
-
-                                    }
-                                }
-                            } else {
-                                items(filteredArticles) { articles ->
-                                    NewsItemLayout(articles,newsViewModel = newsViewModel)
-                                }
+                            items(filteredArticles) { articles ->
+                                NewsItemLayout(articles,newsViewModel = newsViewModel)
                             }
                         }
+
                     }
                 }
             }
@@ -404,18 +377,7 @@ fun NewsItemLayout(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    Brush.linearGradient(
-                        colors = if (isSystemInDarkTheme()) listOf(
-                            Color(0xff215273),
-                            Color(0xff359D9E)
-
-                        ) else listOf(
-                            Color(0xff7CE495),
-                            Color(0xffCFF4D2)
-                        )
-                    )
-                )
+                .background(MaterialTheme.colorScheme.primary)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -436,7 +398,7 @@ fun NewsItemLayout(
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         fontFamily = helventica
                     ),
                     maxLines = 2,
@@ -464,7 +426,7 @@ fun NewsItemLayout(
                         Icon(
                             imageVector = Icons.Default.Share,
                             contentDescription = "Share",
-                            tint =  MaterialTheme.colorScheme.onSurface
+                            tint =  MaterialTheme.colorScheme.onPrimary
                         )
                     }
 
@@ -486,7 +448,7 @@ fun NewsItemLayout(
                         Icon(
                             imageVector = Icons.Outlined.BookmarkBorder,
                             contentDescription = "Book Mark" ,
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }

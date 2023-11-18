@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.jasmeet.worldnow.data.news.Article
+import com.jasmeet.worldnow.room.NewsData
 
 sealed class Screens{
     data object DetailedScreen : Screens()
@@ -36,7 +37,7 @@ object AppRouter{
 
     var detailedArticles by mutableStateOf<Article?>(null)
 
-    var savedDetailedArticles by mutableStateOf<Article?>(null)
+    var savedDetailedArticles by mutableStateOf<NewsData?>(null)
 
     fun navigateTo(destination: Screens){
         currentScreen.value = destination

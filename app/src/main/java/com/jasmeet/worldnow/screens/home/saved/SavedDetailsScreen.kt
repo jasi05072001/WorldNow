@@ -53,6 +53,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jasmeet.worldnow.R
@@ -65,6 +66,7 @@ import com.jasmeet.worldnow.ui.theme.helventica
 import com.jasmeet.worldnow.ui.theme.inter
 import com.jasmeet.worldnow.utils.removeBrackets
 import com.jasmeet.worldnow.utils.removeWhitespaces
+import com.jasmeet.worldnow.viewModels.NewsViewModel
 
 @Composable
 fun SavedDetailedScreen() {
@@ -78,10 +80,11 @@ fun SavedDetailedScreenLayout() {
     val context = LocalContext.current
     val articleDetails = AppRouter.savedDetailedArticles
     val height = LocalConfiguration.current.screenHeightDp.dp
+    val newsViewModel:NewsViewModel = hiltViewModel()
 
     val imgUrl =
-        if (articleDetails?.urlToImage.isNullOrEmpty()) "https://demofree.si.com/nope-not-here.jpg" else removeWhitespaces(
-            articleDetails!!.urlToImage
+        if (articleDetails?.imageUrl.isNullOrEmpty()) "https://demofree.si.com/nope-not-here.jpg" else removeWhitespaces(
+            articleDetails!!.imageUrl
         )
     val displayImg = removeBrackets(imgUrl)
 
@@ -90,7 +93,7 @@ fun SavedDetailedScreenLayout() {
         .crossfade(true)
         .build()
 
-    val content = articleDetails!!.content
+    val content = articleDetails!!.description
     val shareLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
 
@@ -136,7 +139,9 @@ fun SavedDetailedScreenLayout() {
                 ),
                 scrollBehavior = scrollBehaviour,
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        newsViewModel.deleteNewsDataById(articleDetails.savedAt)
+                    }) {
                         Icon(
                             imageVector = Icons.Outlined.DeleteOutline,
                             contentDescription = "Remove from bookmark",
@@ -147,7 +152,7 @@ fun SavedDetailedScreenLayout() {
 
                     }
                     IconButton(onClick = {
-                        val url = articleDetails.url
+                        val url = articleDetails.newsUrl
                         val shareIntent = Intent().apply {
                             action = Intent.ACTION_SEND
                             putExtra(Intent.EXTRA_TEXT, url)
@@ -232,7 +237,7 @@ fun SavedDetailedScreenLayout() {
                     .align(Alignment.CenterHorizontally)
                     .clickable {
                         openTab(
-                            url = articleDetails.url,
+                            url = articleDetails.imageUrl,
                             context = context,
                             isDarkMode = isSystemInDark
                         )

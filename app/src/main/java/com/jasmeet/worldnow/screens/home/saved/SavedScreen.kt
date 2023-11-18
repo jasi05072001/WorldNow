@@ -62,8 +62,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.jasmeet.worldnow.R
-import com.jasmeet.worldnow.data.news.Article
-import com.jasmeet.worldnow.data.news.Source
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.navigation.SystemBackButtonHandler
@@ -138,10 +136,10 @@ fun SavedScreen() {
             LazyColumn(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize()
-                .padding(
-                    top = padding.calculateTopPadding(),
-                    bottom = 10.dp)
+                    .fillMaxSize()
+                    .padding(
+                        top = padding.calculateTopPadding(),
+                        bottom = 10.dp)
             ) {
                 val groupedNews =
                     savedNews.value.groupBy { convertTimestampToMonthAndYear(it.savedAt) }
@@ -218,19 +216,12 @@ fun SavedNewsItemLayout(
             .height(LocalConfiguration.current.screenHeightDp.dp / 8)
             .padding(horizontal = 15.dp, vertical = 10.dp)
             .clickable {
-                AppRouter.savedDetailedArticles = Article(
+                AppRouter.savedDetailedArticles = NewsData(
                     title = articles.title,
                     description = articles.description,
-                    urlToImage = articles.imageUrl,
-                    url = articles.newsUrl,
-                    publishedAt = "",
-                    source = Source(
-                        id = "",
-                        name = ""
-
-                    ),
-                    content = "",
-                    author = ""
+                    imageUrl = articles.imageUrl,
+                    newsUrl = articles.newsUrl,
+                    savedAt = articles.savedAt,
                 )
                 AppRouter.navigateTo(
                     Screens.SavedDetailsArticlesScreen
