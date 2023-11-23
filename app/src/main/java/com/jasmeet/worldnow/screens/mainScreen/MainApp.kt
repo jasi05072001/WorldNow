@@ -37,7 +37,7 @@ import com.jasmeet.worldnow.viewModels.ThemeViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainApp(dataStoreUtil: DataStoreUtil, themeViewModel: ThemeViewModel) {
+fun MainApp(dataStoreUtil: DataStoreUtil, themeViewModel: ThemeViewModel, value: Boolean) {
 
     val context = LocalContext.current
 
@@ -170,7 +170,7 @@ fun MainApp(dataStoreUtil: DataStoreUtil, themeViewModel: ThemeViewModel) {
                 enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
             ) {
-                SettingsScreen(dataStoreUtil, themeViewModel)
+                SettingsScreen(dataStoreUtil,value)
             }
             AnimatedVisibility(
                 visible = editProfileScreenVisible,

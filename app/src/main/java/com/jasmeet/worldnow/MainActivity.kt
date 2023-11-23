@@ -3,6 +3,7 @@ package com.jasmeet.worldnow
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -13,7 +14,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import com.jasmeet.worldnow.dataStore.DataStoreUtil
-import com.jasmeet.worldnow.screens.home.settings.SettingsScreen
 import com.jasmeet.worldnow.screens.mainScreen.MainApp
 import com.jasmeet.worldnow.ui.theme.WorldNowTheme
 import com.jasmeet.worldnow.viewModels.ThemeViewModel
@@ -39,6 +39,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val theme = dataStoreUtil.getTheme(systemTheme).collectAsState(initial = systemTheme)
+            Log.d("Theme", "onCreate: ${theme.value}")
 
             WorldNowTheme(theme.value) {
                 Surface(
@@ -46,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    MainApp(dataStoreUtil, themeViewModel)
+                    MainApp(dataStoreUtil, themeViewModel,theme.value)
                 }
             }
         }

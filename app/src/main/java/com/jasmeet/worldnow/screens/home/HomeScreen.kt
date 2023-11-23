@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -35,6 +37,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -78,7 +81,6 @@ import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.ui.theme.helventica
 import com.jasmeet.worldnow.ui.theme.inter
-import com.jasmeet.worldnow.utils.getProfileImgAndName
 import com.jasmeet.worldnow.viewModels.NewsViewModel
 import kotlinx.coroutines.launch
 
@@ -106,7 +108,7 @@ fun HomeScreenLayout() {
 
 
     val newsViewModel: NewsViewModel = hiltViewModel()
-    val currentDate = java.time.LocalDate.now().minusDays(5).toString()
+    val currentDate = java.time.LocalDate.now().minusDays(4).toString()
     val rememberedNews = rememberSaveable {
         mutableStateOf(emptyList<Article>())
     }
@@ -176,8 +178,8 @@ fun HomeScreenLayout() {
     LaunchedEffect(
         key1 = isHomeScreen.value ,
         block = {
+            namePhotoPair.value= newsViewModel.getProfileImgAndName()
             loading.value = true
-            namePhotoPair.value= getProfileImgAndName()
             isHomeScreen.value = true
             if (isHomeScreen.value){
                 newsViewModel.getNews(
@@ -199,6 +201,10 @@ fun HomeScreenLayout() {
             }
         }
     )
+
+    LaunchedEffect(key1 = true, block = {
+        namePhotoPair.value= newsViewModel.getProfileImgAndName()
+    })
 
 
 
@@ -255,7 +261,6 @@ fun HomeScreenLayout() {
                         val imgRequest = ImageRequest.Builder(context)
                             .data(namePhotoPair.value.second)
                             .crossfade(true)
-                            .crossfade(1000)
                             .build()
 
                         AsyncImage(
@@ -265,23 +270,30 @@ fun HomeScreenLayout() {
                                 .clip(CircleShape)
                                 .size(90.dp)
                                 .border(2.dp, Color.White, CircleShape),
-
-                            contentScale =  ContentScale.FillBounds
+                            contentScale =  ContentScale.FillBounds,
                         )
 
                         Spacer(modifier = Modifier.width(15.dp))
                         Text(
                             text = namePhotoPair.value.first,
                             style = TextStyle(
-                                fontSize = 20.sp,
+                                fontSize = 25.sp,
                                 lineHeight = 22.sp,
                                 fontFamily = inter,
                                 fontWeight = FontWeight(700),
-                                color = Color.Black
+                                color = MaterialTheme.colorScheme.onBackground,
 
                             ),
+
+                            maxLines = 1,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(top = 20.dp)
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                                .basicMarquee(
+                                    initialDelayMillis = 1000,
+                                    velocity = 12.dp,
+                                    spacing = MarqueeSpacing(10.dp)
+                                )
                         )
                     }
 

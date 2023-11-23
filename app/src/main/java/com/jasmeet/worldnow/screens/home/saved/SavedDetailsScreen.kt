@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ElevatedCard
@@ -140,7 +139,7 @@ fun SavedDetailedScreenLayout() {
                 scrollBehavior = scrollBehaviour,
                 actions = {
                     IconButton(onClick = {
-                        newsViewModel.deleteNewsDataById(articleDetails.savedAt)
+                        newsViewModel.deleteNewsDataById(articleDetails.newsUrl)
                     }) {
                         Icon(
                             imageVector = Icons.Outlined.DeleteOutline,
@@ -237,7 +236,7 @@ fun SavedDetailedScreenLayout() {
                     .align(Alignment.CenterHorizontally)
                     .clickable {
                         openTab(
-                            url = articleDetails.imageUrl,
+                            url = articleDetails.newsUrl,
                             context = context,
                             isDarkMode = isSystemInDark
                         )

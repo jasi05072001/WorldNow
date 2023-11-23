@@ -19,7 +19,7 @@ class SavedNewsRepository  @Inject constructor(
         return newsDao.getAllNewsData()
     }
 
-    suspend fun deleteNewsDataById(savedAt: Long){
-        newsDao.deleteNewsDataById(savedAt)
+    suspend fun deleteNewsDataById(url: String){
+        newsDao.deleteNewsDataById(url)
     }
 }

@@ -10,7 +10,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,7 +45,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -235,18 +233,7 @@ fun SavedNewsItemLayout(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    Brush.linearGradient(
-                        colors = if (isSystemInDarkTheme()) listOf(
-                            Color(0xff215273),
-                            Color(0xff359D9E)
-
-                        ) else listOf(
-                            Color(0xff7CE495),
-                            Color(0xffCFF4D2)
-                        )
-                    )
-                )
+                .background(MaterialTheme.colorScheme.primary)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -267,7 +254,7 @@ fun SavedNewsItemLayout(
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         fontFamily = helventica
                     ),
                     maxLines = 2,
@@ -301,7 +288,7 @@ fun SavedNewsItemLayout(
 
                     IconButton(
                         onClick = {
-                            newsViewModel.deleteNewsDataById(articles.savedAt)
+                            newsViewModel.deleteNewsDataById(articles.newsUrl)
                         }
                     ) {
                         Icon(

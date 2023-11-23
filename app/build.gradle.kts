@@ -10,6 +10,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("/home/jasi/Desktop/worldNow/releases.jks")
+            storePassword = "jasmeet34"
+            keyAlias = "key0"
+            keyPassword = "jasmeet34"
+        }
+    }
     namespace = "com.jasmeet.worldnow"
     compileSdk = 34
 
@@ -32,12 +40,13 @@ android {
 
     buildTypes {
         release {
+            isDebuggable = true
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

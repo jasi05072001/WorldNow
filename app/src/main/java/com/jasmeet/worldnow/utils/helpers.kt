@@ -6,7 +6,6 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.jasmeet.worldnow.data.UserInfo
 import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import kotlinx.coroutines.Dispatchers
@@ -87,26 +86,5 @@ fun removeWhitespaces(input: String): String {
 fun removeBrackets(input: String): String {
     return input.replace("[\\[\\]{}]", "")
 }
-
-//this function will return the pair of profile image and name
-suspend fun getProfileImgAndName(): Pair<String, String> = withContext(Dispatchers.IO) {
-
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
-
-    return@withContext if (userId != null){
-        val userCollection = FirebaseFirestore.getInstance().collection("users")
-        val docSnapShot = userCollection.document(userId).get().await()
-
-        val name = docSnapShot.getString("name").toString()
-        val photoUrl = docSnapShot.getString("photoUrl").toString()
-
-        Pair(name, photoUrl)
-    }
-    else{
-        Pair("","")
-    }
-}
-
-
 
 

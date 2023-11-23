@@ -77,7 +77,6 @@ import com.jasmeet.worldnow.navigation.AppRouter
 import com.jasmeet.worldnow.navigation.Screens
 import com.jasmeet.worldnow.room.NewsData
 import com.jasmeet.worldnow.ui.theme.helventica
-import com.jasmeet.worldnow.utils.getProfileImgAndName
 import com.jasmeet.worldnow.utils.getSelectedInterests
 import com.jasmeet.worldnow.utils.removeBrackets
 import com.jasmeet.worldnow.utils.removeWhitespaces
@@ -115,7 +114,7 @@ fun CategoriesView() {
         block = {
             loading.value = true
             interests.value = getSelectedInterests()
-            namePhotoPair.value= getProfileImgAndName()
+            namePhotoPair.value= newsViewModel.getProfileImgAndName()
             newsViewModel.getNews(
                 interests.value[0],
                 1,
