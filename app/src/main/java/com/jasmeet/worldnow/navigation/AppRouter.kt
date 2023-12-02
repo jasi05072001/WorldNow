@@ -22,7 +22,7 @@ sealed class Screens{
     data object SavedScreen :Screens()
     data object SavedDetailsArticlesScreen :Screens()
     data object SettingsScreen :Screens()
-    data object EditProfileScreen :Screens()
+    data object UpdateInterestsScreen :Screens()
 
 
 }

@@ -22,4 +22,5 @@ class SavedNewsRepository  @Inject constructor(
     suspend fun deleteNewsDataById(url: String){
         newsDao.deleteNewsDataById(url)
     }
+
 }

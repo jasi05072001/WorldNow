@@ -1,10 +1,12 @@
 package com.jasmeet.worldnow.screens.home.settings
 
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +37,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.NotificationsActive
+import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -66,6 +71,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -80,6 +86,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.jasmeet.worldnow.R
+import com.jasmeet.worldnow.appComponents.ButtonComponent
 import com.jasmeet.worldnow.appComponents.Space
 import com.jasmeet.worldnow.appComponents.bounceClick
 import com.jasmeet.worldnow.dataStore.DataStoreUtil
@@ -92,15 +105,32 @@ import com.jasmeet.worldnow.utils.showToast
 import com.jasmeet.worldnow.viewModels.NewsViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
 
+    val context = LocalContext.current
 
-    var switchState by rememberSaveable { mutableStateOf(value) }
+    val notificationPermissionState = rememberPermissionState(
+        android.Manifest.permission.POST_NOTIFICATIONS
+    )
+
+    var themeSwitchState by rememberSaveable { mutableStateOf(value) }
+    var notificationSwitchState by rememberSaveable { if (
+        notificationPermissionState.status.isGranted) mutableStateOf(true) else mutableStateOf(false)
+    }
 
     val newsViewModel :NewsViewModel = hiltViewModel()
 
+    val token = stringResource(R.string.default_web_client_id)
+    val gso = remember {
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(token)
+            .requestEmail()
+            .requestProfile()
+            .build()
+    }
 
 
     val namePhotoPair = remember {
@@ -110,7 +140,7 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
     var isEditDialogVisible by rememberSaveable {
         mutableStateOf(false)
     }
-    var country = rememberSaveable {
+    val country = rememberSaveable {
         mutableStateOf("")
 
     }
@@ -118,7 +148,7 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
     var newName by remember {
         mutableStateOf("")
     }
-    val context = LocalContext.current
+
 
     val width = LocalConfiguration.current.screenWidthDp.dp
 
@@ -134,6 +164,16 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
 
     }
 
+    val themeState = if (themeSwitchState) "Dark" else "Light"
+    val notificationState = if (notificationSwitchState) "Enabled" else "Disabled"
+
+    val googleSignInClient = remember {
+        GoogleSignIn.getClient(context, gso)
+    }
+
+
+
+
     LaunchedEffect(
         key1 = true,
         block = {
@@ -145,7 +185,7 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
         namePhotoPair.value= newsViewModel.getProfileImgAndName()
     } )
 
-    var settingsItem = listOf(
+    val settingsItem = listOf(
         SettingsItem(
             title = "Country",
             value =country.value
@@ -158,7 +198,7 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
             title = "Your Interest",
             value= "Edit",
             onclick = {
-                showToast(context,"it is edit")
+                AppRouter.navigateTo(Screens.UpdateInterestsScreen)
             }
         ),
 
@@ -309,7 +349,6 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
                                 containerColor = Color(0x80000000)
                             ),
                             onClick = {
-
                                 coroutineScope.launch {
                                     isConfirmedClicked = true
                                     newsViewModel.updateProfileImg(
@@ -360,30 +399,28 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
                 }
             )
 
-            Space(height = 15.dp)
+            Space(height = 35.dp)
 
-            Divider(
-                color = MaterialTheme.colorScheme.primary,
+            Text(
+                text ="Preferences",
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = helventica
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 10.dp)
             )
 
-            Space(height = 15.dp)
+            Space(height = 10.dp)
 
             Column(modifier = Modifier
-                .padding(horizontal = 20.dp)
+                .padding(start = 20.dp,end= 20.dp, bottom = 15.dp)
                 .weight(1f)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
             ) {
-                MySwitch(
-                    switchState,
-                    onCheckedChange = {
-                        switchState = it
-                    },
-                    dataStoreUtil = dataStoreUtil
-                )
                 settingsItem.forEach {
                     Column(  modifier = Modifier.fillMaxWidth()) {
                         Row(
@@ -404,7 +441,7 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
                                 onClick = {
                                     it.onclick.invoke()
 
-                            },
+                                },
                                 modifier = Modifier.bounceClick()
                             ) {
                                 Text(
@@ -425,12 +462,82 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
 
                 }
 
+                Space(height = 5.dp)
 
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text ="Notifications : $notificationState", style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = inter
+                    ))
+
+                    NotificationSwitch(
+                        notificationSwitchState,
+                        onCheckedChange = {
+                            notificationSwitchState = it
+                        },
+                    )
+                    if (notificationSwitchState){
+                        notificationPermissionState.launchPermissionRequest()
+                    }
+
+                }
+                Space(height = 5.dp)
+                Divider(color = MaterialTheme.colorScheme.primary)
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text ="Theme : $themeState",
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = inter
+                        )
+                    )
+
+                    ThemeSwitch(
+                        themeSwitchState,
+                        onCheckedChange = {
+                            themeSwitchState = it
+                            if (!it){
+                                notificationPermissionState.launchPermissionRequest()
+                            }
+                        },
+                        dataStoreUtil = dataStoreUtil
+                    )
+
+                }
+                Space(height = 5.dp)
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                ButtonComponent(
+                    onclick = {
+                       newsViewModel.logout(googleSignInClient)
+
+//                              val imgUrl = "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+//                        val sendNotification = SendNotification(context)
+//                        sendNotification.execute("title", "message", imgUrl)
+//                        scheduleRepeatingNotification(
+//                            context = context,
+//                            imageURL = "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//                            title = "Singh is King"
+//                        )
+
+
+                    },
+                    text = "Logout",
+                    isEnabled = true
+                )
             }
-
-
-
-
         }
 
         if (isEditDialogVisible){
@@ -569,7 +676,7 @@ fun SettingsScreen(dataStoreUtil: DataStoreUtil, value: Boolean) {
     }
 }
 @Composable
-fun MySwitch(
+fun ThemeSwitch(
     isCheck: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     dataStoreUtil: DataStoreUtil
@@ -609,5 +716,35 @@ data class SettingsItem(
     var onclick :() ->Unit = {}
 )
 
+@Composable
+fun NotificationSwitch(
+    isCheck: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Switch(
+        checked = isCheck,
+        onCheckedChange = {
+            onCheckedChange(it)
+        },
+
+        thumbContent = {
+            if (isCheck) {
+                Icon(
+                    imageVector = Icons.Outlined.NotificationsActive,
+                    contentDescription = null,
+                    modifier = Modifier.size(SwitchDefaults.IconSize)
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Outlined.NotificationsOff,
+                    contentDescription = null,
+                    modifier = Modifier.size(SwitchDefaults.IconSize)
+                )
+
+            }
+        },
+    )
+
+}
 
 

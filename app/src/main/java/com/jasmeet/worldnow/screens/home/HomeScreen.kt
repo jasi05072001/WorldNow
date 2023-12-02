@@ -72,8 +72,6 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.jasmeet.worldnow.R
 import com.jasmeet.worldnow.data.NavigationItem
 import com.jasmeet.worldnow.data.news.Article
@@ -91,21 +89,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreenLayout() {
     val context = LocalContext.current
-
-    val token = stringResource(R.string.default_web_client_id)
-    val gso = remember {
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(token)
-            .requestEmail()
-            .requestProfile()
-            .build()
-    }
-
-    val googleSignInClient = remember {
-        GoogleSignIn.getClient(context, gso)
-    }
-
-
 
     val newsViewModel: NewsViewModel = hiltViewModel()
     val currentDate = java.time.LocalDate.now().minusDays(4).toString()
@@ -250,7 +233,7 @@ fun HomeScreenLayout() {
                         modifier = Modifier
                             .padding(horizontal = 20.dp)
                             .clickable {
-                                AppRouter.navigateTo(Screens.EditProfileScreen)
+                                AppRouter.navigateTo(Screens.SettingsScreen)
                             }
                             .fillMaxWidth()
                             .background(Color.Transparent),

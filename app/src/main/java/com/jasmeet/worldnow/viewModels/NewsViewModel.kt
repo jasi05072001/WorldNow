@@ -37,6 +37,7 @@ class NewsViewModel @Inject constructor(
     private val _newsList = MutableLiveData<List<NewsData>>()
     val newsList: LiveData<List<NewsData>> get() = _newsList
 
+
     private val _singleNewsItem = MutableLiveData<NewsData?>()
     val singleNewsItem: LiveData<NewsData?> get() = _singleNewsItem
 
@@ -133,6 +134,24 @@ class NewsViewModel @Inject constructor(
         }
     }
 
+    suspend fun updateCountry(country: String) = withContext(Dispatchers.IO) {
+        val userId = auth.currentUser?.uid
+
+        if (userId != null) {
+            val userCollection = FirebaseFirestore.getInstance().collection("users")
+            userCollection.document(userId).update("country", country).await()
+        }
+    }
+
+    suspend fun updateInterests(interests :List<String>) = withContext(Dispatchers.IO) {
+        val userId = auth.currentUser?.uid
+
+        if (userId != null) {
+            val userCollection = FirebaseFirestore.getInstance().collection("users")
+            userCollection.document(userId).update("interest", interests).await()
+        }
+    }
+
 
 
     fun getNews(
@@ -145,6 +164,18 @@ class NewsViewModel @Inject constructor(
     ){
         repository.getNews(query,page,successCallBack,failureCallback,pagSize,from)
     }
+
+    fun getRandomNews(
+        query :String,
+        page :Int,
+        successCallBack :(response : News?) ->Unit,
+        failureCallback: (error: String) -> Unit,
+        pagSize :Int = 70,
+        from:String
+    ){
+        repository.getNews(query,page,successCallBack,failureCallback,pagSize,from)
+    }
+
 
     fun logout(googleSignInClient: GoogleSignInClient) {
         // Sign out of Firebase Authentication
@@ -198,5 +229,6 @@ class NewsViewModel @Inject constructor(
             }
         }
     }
+
 
 }

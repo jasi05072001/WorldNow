@@ -40,7 +40,7 @@ android {
 
     buildTypes {
         release {
-            isDebuggable = true
+            isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+    implementation(libs.work.runtime.ktx)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     debugImplementation(libs.ui.tooling)
@@ -149,6 +150,13 @@ dependencies {
 
     //dataStore
     implementation (libs.datastore.preferences)
+
+    //accompanist Permissions
+    implementation (libs.accompanist.permissions)
+
+     implementation ("com.github.bumptech.glide:glide:4.12.0")
+
+    implementation ("androidx.work:work-runtime:2.8.1")
 
 
 }
