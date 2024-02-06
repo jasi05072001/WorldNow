@@ -12,9 +12,9 @@ plugins {
 android {
     signingConfigs {
         create("release") {
-            storeFile = file("/home/jasi/Desktop/worldNow/releases.jks")
+            storeFile = file("/home/jasmeets/AndroidStudioProjects/WorldNow/keystore.jks")
             storePassword = "jasmeet34"
-            keyAlias = "key0"
+            keyAlias = "release"
             keyPassword = "jasmeet34"
         }
     }

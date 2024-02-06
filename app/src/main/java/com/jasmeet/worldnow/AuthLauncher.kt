@@ -38,8 +38,7 @@ fun rememberFirebaseAuthLauncher(
                 onAuthError(e.message.toString())
             }
         } else {
-            val status = Status(result.resultCode)
-            onAuthError(ApiException(status).message.toString()) // Handle case where sign-in is canceled or failed
+            onAuthError("User has cancelled the operation")
         }
     }
 }
